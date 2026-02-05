@@ -1,0 +1,17 @@
+{
+  "name": "StudyHub - Plateforme d'apprentissage interactif",
+  "short_name": "StudyHub",
+  "description": "Apprends efficacement avec des cours interactifs et des exercices variés",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#06b6d4",
+  "lang": "fr",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

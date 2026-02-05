@@ -24,7 +24,7 @@ export default function CoursePage({ params }: { params: Promise<{ courseId: str
 
       {/* Header */}
       <header className="relative overflow-hidden border-b border-white/10">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-900/30 via-purple-900/20 to-pink-900/30" />
+        <div className="absolute inset-0 bg-indigo-900/20" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <Link href="/" className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-6 transition">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,7 +62,7 @@ export default function CoursePage({ params }: { params: Promise<{ courseId: str
             return (
               <div key={chapter.id} className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
                 {/* Chapter Header */}
-                <div className={`p-6 bg-gradient-to-r ${chapter.color} bg-opacity-20`}>
+                <div className={`p-6 ${chapter.color}`}>
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-3xl">
                       {chapter.icon}

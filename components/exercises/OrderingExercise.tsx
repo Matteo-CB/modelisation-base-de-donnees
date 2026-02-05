@@ -141,7 +141,7 @@ export default function OrderingExercise({ exercise, onComplete }: OrderingExerc
       {!showResult && (
         <button
           onClick={handleSubmit}
-          className="mt-6 w-full py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-xl hover:from-amber-400 hover:to-orange-400 transition"
+          className="mt-6 w-full py-3 bg-cyan-500 text-white font-semibold rounded-xl hover:bg-cyan-400 transition"
         >
           Valider l'ordre
         </button>

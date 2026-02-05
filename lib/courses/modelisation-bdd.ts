@@ -11,7 +11,7 @@ export const modelisationBDD: Course = {
       title: 'Introduction aux Bases de Données',
       description: 'Découvrez ce qu\'est une base de données et ses fondements',
       icon: '🗄️',
-      color: 'from-blue-500 to-cyan-500',
+      color: 'bg-cyan-600/20',
       sections: [
         {
           id: 'sec1-1-definition',
@@ -211,7 +211,7 @@ C'est le relais entre les utilisateurs et le SGBD. Les utilisateurs interrogent 
       title: 'Le Modèle Entité/Association',
       description: 'Maîtrise la modélisation conceptuelle avec le modèle E/A',
       icon: '🔗',
-      color: 'from-purple-500 to-pink-500',
+      color: 'bg-purple-600/20',
       sections: [
         {
           id: 'sec2-1-entites',
@@ -591,7 +591,7 @@ Le Prix et la Date d'achat sont des attributs de l'**association** Acheter, pas 
       title: 'Le Modèle Relationnel',
       description: 'Comprends les relations, clés et contraintes d\'intégrité',
       icon: '📊',
-      color: 'from-green-500 to-teal-500',
+      color: 'bg-emerald-600/20',
       sections: [
         {
           id: 'sec3-1-concepts',
@@ -940,7 +940,7 @@ Employé(NoSS, NomEmp, Adresse, Salaire, NoDept)
       title: 'Du Modèle E/A au Modèle Relationnel',
       description: 'Apprends les règles de transformation',
       icon: '🔄',
-      color: 'from-orange-500 to-red-500',
+      color: 'bg-orange-600/20',
       sections: [
         {
           id: 'sec4-1-entites',

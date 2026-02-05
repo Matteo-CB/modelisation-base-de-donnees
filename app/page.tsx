@@ -14,7 +14,7 @@ function CourseCard({ course }: { course: typeof courses[0] }) {
   return (
     <Link href={`/cours/${course.id}`} className="block">
       <div className="bg-white/5 rounded-2xl border border-white/10 overflow-hidden card-hover">
-        <div className="h-32 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 relative">
+        <div className="h-32 bg-indigo-600 relative">
           <div className="absolute inset-0 bg-black/20" />
           <div className="absolute bottom-4 left-4">
             <span className="text-4xl">{course.chapters[0]?.icon || '📚'}</span>
@@ -46,7 +46,7 @@ function CourseCard({ course }: { course: typeof courses[0] }) {
             </div>
             <div className="h-2 bg-white/10 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 rounded-full transition-all duration-500"
+                className="h-full bg-cyan-500 rounded-full transition-all duration-500"
                 style={{ width: `${progress.percentage}%` }}
               />
             </div>
@@ -55,6 +55,22 @@ function CourseCard({ course }: { course: typeof courses[0] }) {
       </div>
     </Link>
   )
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'StudyHub',
+  description: "Plateforme d'apprentissage interactif pour étudiants avec exercices et révisions personnalisées.",
+  url: 'https://studyhub.app',
+  applicationCategory: 'EducationalApplication',
+  operatingSystem: 'Web',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'EUR',
+  },
+  inLanguage: 'fr',
 }
 
 export default function Home() {
@@ -66,18 +82,19 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#0a0a0f]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Navbar />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-cyan-900/20" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-3xl" />
-
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
           <div className="text-center">
             <h1 className="text-5xl md:text-6xl font-bold mb-6">
               <span className="text-white">Apprends</span>{' '}
-              <span className="gradient-text">efficacement</span>
+              <span className="text-cyan-400">efficacement</span>
             </h1>
             <p className="text-xl text-white/60 max-w-2xl mx-auto mb-8">
               Une plateforme d'apprentissage interactive avec des exercices ludiques,
@@ -137,7 +154,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link href="/revision" className="block">
-            <div className="bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl border border-cyan-500/30 p-6 card-hover">
+            <div className="bg-cyan-500/10 rounded-2xl border border-cyan-500/30 p-6 card-hover">
               <div className="flex items-center gap-4">
                 <div className="w-14 h-14 bg-cyan-500/20 rounded-xl flex items-center justify-center">
                   <span className="text-3xl">🧠</span>
@@ -150,7 +167,7 @@ export default function Home() {
             </div>
           </Link>
 
-          <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-2xl border border-purple-500/30 p-6 opacity-60">
+          <div className="bg-purple-500/10 rounded-2xl border border-purple-500/30 p-6 opacity-60">
             <div className="flex items-center gap-4">
               <div className="w-14 h-14 bg-purple-500/20 rounded-xl flex items-center justify-center">
                 <span className="text-3xl">📈</span>

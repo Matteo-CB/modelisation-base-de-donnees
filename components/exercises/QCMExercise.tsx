@@ -94,7 +94,7 @@ export default function QCMExercise({ exercise, onComplete }: QCMExerciseProps) 
         <button
           onClick={handleSubmit}
           disabled={selectedAnswer === null}
-          className="mt-6 w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl hover:from-purple-400 hover:to-pink-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-6 w-full py-3 bg-cyan-500 text-white font-semibold rounded-xl hover:bg-cyan-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Valider ma réponse
         </button>

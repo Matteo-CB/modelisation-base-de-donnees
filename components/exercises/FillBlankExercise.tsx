@@ -71,7 +71,7 @@ export default function FillBlankExercise({ exercise, onComplete }: FillBlankExe
         <button
           onClick={handleSubmit}
           disabled={answers.some(a => !a.trim())}
-          className="mt-8 w-full py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold rounded-xl hover:from-cyan-400 hover:to-blue-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-8 w-full py-3 bg-cyan-500 text-white font-semibold rounded-xl hover:bg-cyan-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Vérifier
         </button>

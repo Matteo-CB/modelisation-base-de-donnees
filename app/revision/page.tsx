@@ -100,7 +100,7 @@ export default function RevisionPage() {
                 </p>
                 <Link
                   href={`/cours/${course.id}`}
-                  className="inline-block px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition"
+                  className="inline-block px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition"
                 >
                   Commencer le cours
                 </Link>
@@ -177,7 +177,7 @@ export default function RevisionPage() {
                   <button
                     onClick={startQuiz}
                     disabled={filteredExercises.length === 0}
-                    className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    className="px-8 py-4 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                   >
                     Lancer le quiz ({Math.min(quizSize, filteredExercises.length)} questions)
                   </button>
@@ -210,7 +210,7 @@ export default function RevisionPage() {
             {/* Progress */}
             <div className="h-2 bg-white/10 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-500"
+                className="h-full bg-cyan-500 transition-all duration-500"
                 style={{ width: `${((currentExerciseIndex + (results.length > currentExerciseIndex ? 1 : 0)) / selectedExercises.length) * 100}%` }}
               />
             </div>
@@ -232,7 +232,7 @@ export default function RevisionPage() {
               <div className="flex justify-center">
                 <button
                   onClick={handleNextExercise}
-                  className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition transform hover:scale-105 flex items-center gap-2"
+                  className="px-8 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition transform hover:scale-105 flex items-center gap-2"
                 >
                   {currentExerciseIndex < selectedExercises.length - 1 ? (
                     <>
@@ -279,10 +279,10 @@ export default function RevisionPage() {
             <div>
               <div className={`w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 ${
                 correctCount === selectedExercises.length
-                  ? 'bg-gradient-to-r from-green-400 to-emerald-500'
+                  ? 'bg-green-500'
                   : correctCount >= selectedExercises.length / 2
-                  ? 'bg-gradient-to-r from-cyan-400 to-blue-500'
-                  : 'bg-gradient-to-r from-orange-400 to-red-500'
+                  ? 'bg-cyan-500'
+                  : 'bg-orange-500'
               }`}>
                 <span className="text-4xl">
                   {correctCount === selectedExercises.length ? '🏆' : correctCount >= selectedExercises.length / 2 ? '👍' : '📚'}
@@ -338,7 +338,7 @@ export default function RevisionPage() {
 
               <Link
                 href="/"
-                className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition"
+                className="px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition"
               >
                 Retour à l'accueil
               </Link>

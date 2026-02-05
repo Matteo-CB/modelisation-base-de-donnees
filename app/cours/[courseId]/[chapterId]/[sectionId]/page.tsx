@@ -127,7 +127,7 @@ export default function SectionPage({
           {/* Progress bar */}
           <div className="h-1 bg-white/10 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-cyan-500 to-purple-500 transition-all duration-500"
+              className="h-full bg-cyan-500 transition-all duration-500"
               style={{
                 width: currentStep === 'content'
                   ? '10%'
@@ -224,7 +224,7 @@ export default function SectionPage({
             <div className="flex justify-center pt-4">
               <button
                 onClick={() => setCurrentStep('exercises')}
-                className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition transform hover:scale-105 flex items-center gap-3"
+                className="px-8 py-4 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition transform hover:scale-105 flex items-center gap-3"
               >
                 <span>Passer aux exercices</span>
                 <span className="text-xl">🎯</span>
@@ -254,7 +254,7 @@ export default function SectionPage({
               <div className="flex justify-center">
                 <button
                   onClick={handleNextExercise}
-                  className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition transform hover:scale-105 flex items-center gap-2"
+                  className="px-8 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition transform hover:scale-105 flex items-center gap-2"
                 >
                   {currentExerciseIndex < totalExercises - 1 ? (
                     <>
@@ -298,7 +298,7 @@ export default function SectionPage({
         {/* Complete Step */}
         {currentStep === 'complete' && (
           <div className="text-center py-12">
-            <div className="w-24 h-24 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="w-24 h-24 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
               <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
@@ -350,7 +350,7 @@ export default function SectionPage({
 
               <button
                 onClick={handleContinue}
-                className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition"
+                className="px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition"
               >
                 {nextSection
                   ? 'Section suivante'

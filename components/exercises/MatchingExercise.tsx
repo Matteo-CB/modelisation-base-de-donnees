@@ -61,11 +61,11 @@ export default function MatchingExercise({ exercise, onComplete }: MatchingExerc
 
   const getMatchColor = (leftIdx: number) => {
     const colors = [
-      'from-purple-500 to-pink-500',
-      'from-blue-500 to-cyan-500',
-      'from-green-500 to-emerald-500',
-      'from-orange-500 to-yellow-500',
-      'from-red-500 to-rose-500'
+      'bg-purple-500',
+      'bg-blue-500',
+      'bg-emerald-500',
+      'bg-orange-500',
+      'bg-rose-500'
     ]
     return colors[leftIdx % colors.length]
   }
@@ -106,9 +106,9 @@ export default function MatchingExercise({ exercise, onComplete }: MatchingExerc
                     ? 'bg-red-500/30 border-2 border-red-500'
                     : 'bg-white/5 border border-white/10'
                   : selectedLeft === idx
-                  ? `bg-gradient-to-r ${getMatchColor(idx)} text-white`
+                  ? `${getMatchColor(idx)} text-white`
                   : matches.has(idx)
-                  ? `bg-gradient-to-r ${getMatchColor(idx)} opacity-60`
+                  ? `${getMatchColor(idx)} opacity-60`
                   : 'bg-white/5 border border-white/10 hover:bg-white/10'
               }`}
             >
@@ -135,7 +135,7 @@ export default function MatchingExercise({ exercise, onComplete }: MatchingExerc
                       ? 'bg-red-500/30 border-2 border-red-500'
                       : 'bg-white/5 border border-white/10'
                     : matchedLeftIdx !== undefined
-                    ? `bg-gradient-to-r ${getMatchColor(matchedLeftIdx)} opacity-60`
+                    ? `${getMatchColor(matchedLeftIdx)} opacity-60`
                     : 'bg-white/5 border border-white/10 hover:bg-white/10'
                 }`}
               >
@@ -150,7 +150,7 @@ export default function MatchingExercise({ exercise, onComplete }: MatchingExerc
         <button
           onClick={handleSubmit}
           disabled={matches.size !== pairs.length}
-          className="mt-6 w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-xl hover:from-purple-400 hover:to-pink-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-6 w-full py-3 bg-cyan-500 text-white font-semibold rounded-xl hover:bg-cyan-400 transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           Vérifier mes associations ({matches.size}/{pairs.length})
         </button>

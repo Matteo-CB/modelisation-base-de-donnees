@@ -123,14 +123,6 @@ body {
   animation: progress 1s ease-out;
 }
 
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 /* Card hover effect */
 .card-hover {
   transition: all 0.3s ease;
