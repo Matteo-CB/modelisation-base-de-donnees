@@ -1,0 +1,6 @@
+export { default as ExerciseWrapper } from './ExerciseWrapper'
+export { default as QCMExercise } from './QCMExercise'
+export { default as TrueFalseExercise } from './TrueFalseExercise'
+export { default as MatchingExercise } from './MatchingExercise'
+export { default as FillBlankExercise } from './FillBlankExercise'
+export { default as OrderingExercise } from './OrderingExercise'
