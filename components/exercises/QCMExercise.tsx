@@ -101,21 +101,51 @@ export default function QCMExercise({ exercise, onComplete }: QCMExerciseProps) 
       )}
 
       {showResult && (
-        <div className={`mt-6 p-4 rounded-xl ${isCorrect ? 'bg-green-500/20' : 'bg-orange-500/20'}`}>
-          <div className="flex items-center gap-2 mb-2">
-            {isCorrect ? (
-              <>
-                <span className="text-2xl">🎉</span>
-                <span className="font-bold text-green-400">Excellent !</span>
-              </>
-            ) : (
-              <>
-                <span className="text-2xl">💡</span>
-                <span className="font-bold text-orange-400">Pas tout à fait...</span>
-              </>
-            )}
+        <div className={`mt-6 rounded-xl overflow-hidden border ${isCorrect ? 'border-green-500/30' : 'border-orange-500/30'}`}>
+          {/* Header */}
+          <div className={`px-5 py-3 ${isCorrect ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
+            <div className="flex items-center gap-2">
+              {isCorrect ? (
+                <>
+                  <span className="text-2xl">🎉</span>
+                  <span className="font-bold text-green-400 text-lg">Bonne réponse !</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-2xl">✗</span>
+                  <span className="font-bold text-red-400 text-lg">Mauvaise réponse</span>
+                </>
+              )}
+            </div>
           </div>
-          <p className="text-white/80 text-sm">{exercise.explanation}</p>
+
+          {/* Details */}
+          <div className="px-5 py-4 bg-white/5 space-y-3">
+            {!isCorrect && selectedAnswer !== null && exercise.options && (
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <span className="text-red-400 font-semibold text-sm shrink-0 mt-0.5">Ta réponse :</span>
+                  <span className="text-red-300 text-sm line-through">{exercise.options[selectedAnswer]}</span>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="text-green-400 font-semibold text-sm shrink-0 mt-0.5">Bonne réponse :</span>
+                  <span className="text-green-300 text-sm">{exercise.options[exercise.correctAnswer as number]}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Separator */}
+            {!isCorrect && <div className="border-t border-white/10" />}
+
+            {/* Explanation */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">💡</span>
+                <span className="text-white font-semibold text-sm">Explication</span>
+              </div>
+              <p className="text-white/80 text-sm leading-relaxed pl-7">{exercise.explanation}</p>
+            </div>
+          </div>
         </div>
       )}
     </div>

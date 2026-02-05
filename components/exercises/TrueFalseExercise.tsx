@@ -19,6 +19,9 @@ export default function TrueFalseExercise({ exercise, onComplete }: TrueFalseExe
     onComplete(isCorrect)
   }
 
+  const correctLabel = exercise.correctAnswer === 0 ? 'VRAI' : 'FAUX'
+  const userLabel = selectedAnswer === 0 ? 'VRAI' : 'FAUX'
+
   return (
     <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
       <div className="flex items-center gap-3 mb-4">
@@ -87,21 +90,50 @@ export default function TrueFalseExercise({ exercise, onComplete }: TrueFalseExe
       )}
 
       {showResult && (
-        <div className={`mt-6 p-4 rounded-xl ${isCorrect ? 'bg-green-500/20' : 'bg-orange-500/20'}`}>
-          <div className="flex items-center gap-2 mb-2">
-            {isCorrect ? (
-              <>
-                <span className="text-2xl">🎯</span>
-                <span className="font-bold text-green-400">Bien joué !</span>
-              </>
-            ) : (
-              <>
-                <span className="text-2xl">📚</span>
-                <span className="font-bold text-orange-400">À retenir :</span>
-              </>
-            )}
+        <div className={`mt-6 rounded-xl overflow-hidden border ${isCorrect ? 'border-green-500/30' : 'border-orange-500/30'}`}>
+          {/* Header */}
+          <div className={`px-5 py-3 ${isCorrect ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
+            <div className="flex items-center gap-2">
+              {isCorrect ? (
+                <>
+                  <span className="text-2xl">🎯</span>
+                  <span className="font-bold text-green-400 text-lg">Bonne réponse !</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-2xl">✗</span>
+                  <span className="font-bold text-red-400 text-lg">Mauvaise réponse</span>
+                </>
+              )}
+            </div>
           </div>
-          <p className="text-white/80 text-sm">{exercise.explanation}</p>
+
+          {/* Details */}
+          <div className="px-5 py-4 bg-white/5 space-y-3">
+            {!isCorrect && (
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-red-400 font-semibold text-sm">Ta réponse :</span>
+                  <span className="text-red-300 text-sm line-through">{userLabel}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-green-400 font-semibold text-sm">Bonne réponse :</span>
+                  <span className="text-green-300 text-sm font-medium">{correctLabel}</span>
+                </div>
+              </div>
+            )}
+
+            {!isCorrect && <div className="border-t border-white/10" />}
+
+            {/* Explanation */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">💡</span>
+                <span className="text-white font-semibold text-sm">Explication</span>
+              </div>
+              <p className="text-white/80 text-sm leading-relaxed pl-7">{exercise.explanation}</p>
+            </div>
+          </div>
         </div>
       )}
     </div>

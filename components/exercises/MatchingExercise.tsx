@@ -76,6 +76,9 @@ export default function MatchingExercise({ exercise, onComplete }: MatchingExerc
     return shuffledRight[rightIdx] === leftIdx
   }
 
+  const allCorrect = Array.from(matches.entries()).every(([left]) => isCorrectMatch(left))
+  const correctCount = Array.from(matches.entries()).filter(([left]) => isCorrectMatch(left)).length
+
   return (
     <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
       <div className="flex items-center gap-3 mb-4">
@@ -154,25 +157,56 @@ export default function MatchingExercise({ exercise, onComplete }: MatchingExerc
       )}
 
       {showResult && (
-        <div className={`mt-6 p-4 rounded-xl ${
-          Array.from(matches.entries()).every(([left]) => isCorrectMatch(left))
-            ? 'bg-green-500/20'
-            : 'bg-orange-500/20'
-        }`}>
-          <div className="flex items-center gap-2 mb-2">
-            {Array.from(matches.entries()).every(([left]) => isCorrectMatch(left)) ? (
+        <div className={`mt-6 rounded-xl overflow-hidden border ${allCorrect ? 'border-green-500/30' : 'border-orange-500/30'}`}>
+          {/* Header */}
+          <div className={`px-5 py-3 ${allCorrect ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
+            <div className="flex items-center gap-2">
+              {allCorrect ? (
+                <>
+                  <span className="text-2xl">🎉</span>
+                  <span className="font-bold text-green-400 text-lg">Toutes les associations sont correctes !</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-2xl">✗</span>
+                  <span className="font-bold text-red-400 text-lg">
+                    {correctCount}/{pairs.length} association{correctCount > 1 ? 's' : ''} correcte{correctCount > 1 ? 's' : ''}
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Details */}
+          <div className="px-5 py-4 bg-white/5 space-y-3">
+            {!allCorrect && (
               <>
-                <span className="text-2xl">🎉</span>
-                <span className="font-bold text-green-400">Parfait !</span>
-              </>
-            ) : (
-              <>
-                <span className="text-2xl">💡</span>
-                <span className="font-bold text-orange-400">Quelques erreurs...</span>
+                <div className="space-y-2">
+                  <span className="text-green-400 font-semibold text-sm">Les bonnes associations :</span>
+                  {pairs.map((pair, idx) => (
+                    <div key={idx} className={`flex items-center gap-3 p-2 rounded-lg ${isCorrectMatch(idx) ? 'bg-green-500/10' : 'bg-red-500/10'}`}>
+                      <span className={isCorrectMatch(idx) ? 'text-green-400' : 'text-red-400'}>
+                        {isCorrectMatch(idx) ? '✓' : '✗'}
+                      </span>
+                      <span className="text-white/80 text-sm">{pair.left}</span>
+                      <span className="text-white/40">→</span>
+                      <span className={`text-sm ${isCorrectMatch(idx) ? 'text-green-300' : 'text-green-300'}`}>{pair.right}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="border-t border-white/10" />
               </>
             )}
+
+            {/* Explanation */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">💡</span>
+                <span className="text-white font-semibold text-sm">Explication</span>
+              </div>
+              <p className="text-white/80 text-sm leading-relaxed pl-7">{exercise.explanation}</p>
+            </div>
           </div>
-          <p className="text-white/80 text-sm">{exercise.explanation}</p>
         </div>
       )}
     </div>

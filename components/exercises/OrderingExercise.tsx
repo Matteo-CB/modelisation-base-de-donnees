@@ -64,6 +64,10 @@ export default function OrderingExercise({ exercise, onComplete }: OrderingExerc
     return order[idx] === correctAnswer[idx]
   }
 
+  const correctAnswer = exercise.correctAnswer as number[]
+  const isAllCorrect = order.every((item, idx) => item === correctAnswer[idx])
+  const correctPositions = order.filter((_, idx) => isItemInCorrectPosition(idx)).length
+
   return (
     <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
       <div className="flex items-center gap-3 mb-4">
@@ -144,25 +148,56 @@ export default function OrderingExercise({ exercise, onComplete }: OrderingExerc
       )}
 
       {showResult && (
-        <div className={`mt-6 p-4 rounded-xl ${
-          order.every((_, idx) => isItemInCorrectPosition(idx))
-            ? 'bg-green-500/20'
-            : 'bg-orange-500/20'
-        }`}>
-          <div className="flex items-center gap-2 mb-2">
-            {order.every((_, idx) => isItemInCorrectPosition(idx)) ? (
+        <div className={`mt-6 rounded-xl overflow-hidden border ${isAllCorrect ? 'border-green-500/30' : 'border-orange-500/30'}`}>
+          {/* Header */}
+          <div className={`px-5 py-3 ${isAllCorrect ? 'bg-green-500/20' : 'bg-red-500/20'}`}>
+            <div className="flex items-center gap-2">
+              {isAllCorrect ? (
+                <>
+                  <span className="text-2xl">🏆</span>
+                  <span className="font-bold text-green-400 text-lg">Ordre parfait !</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-2xl">✗</span>
+                  <span className="font-bold text-red-400 text-lg">
+                    {correctPositions}/{order.length} en bonne position
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Details */}
+          <div className="px-5 py-4 bg-white/5 space-y-3">
+            {!isAllCorrect && (
               <>
-                <span className="text-2xl">🏆</span>
-                <span className="font-bold text-green-400">Ordre parfait !</span>
-              </>
-            ) : (
-              <>
-                <span className="text-2xl">🔄</span>
-                <span className="font-bold text-orange-400">L'ordre correct :</span>
+                <div>
+                  <span className="text-green-400 font-semibold text-sm">Le bon ordre :</span>
+                  <div className="mt-2 space-y-1">
+                    {correctAnswer.map((itemIdx, position) => (
+                      <div key={position} className="flex items-center gap-3 p-2 rounded-lg bg-green-500/10">
+                        <span className="w-6 h-6 rounded flex items-center justify-center bg-green-500/30 text-green-400 font-bold text-xs">
+                          {position + 1}
+                        </span>
+                        <span className="text-green-300 text-sm">{items[itemIdx]}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="border-t border-white/10" />
               </>
             )}
+
+            {/* Explanation */}
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-lg">💡</span>
+                <span className="text-white font-semibold text-sm">Explication</span>
+              </div>
+              <p className="text-white/80 text-sm leading-relaxed pl-7">{exercise.explanation}</p>
+            </div>
           </div>
-          <p className="text-white/80 text-sm">{exercise.explanation}</p>
         </div>
       )}
     </div>

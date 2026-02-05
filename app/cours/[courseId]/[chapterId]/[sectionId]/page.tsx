@@ -38,6 +38,7 @@ export default function SectionPage({
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0)
   const [exerciseResults, setExerciseResults] = useState<boolean[]>([])
   const [showKeyPoints, setShowKeyPoints] = useState(false)
+  const [waitingForNext, setWaitingForNext] = useState(false)
 
   if (!course || !chapter || !section) {
     notFound()
@@ -56,6 +57,7 @@ export default function SectionPage({
   const handleExerciseComplete = (correct: boolean) => {
     const newResults = [...exerciseResults, correct]
     setExerciseResults(newResults)
+    setWaitingForNext(true)
 
     // Save result to database
     saveExerciseResult(
@@ -65,16 +67,16 @@ export default function SectionPage({
       correct ? 1 : 0,
       1
     )
+  }
 
-    // Wait a bit then move to next exercise or complete
-    setTimeout(() => {
-      if (currentExerciseIndex < totalExercises - 1) {
-        setCurrentExerciseIndex(currentExerciseIndex + 1)
-      } else {
-        setCurrentStep('complete')
-        markSectionComplete(chapterId, sectionId)
-      }
-    }, 2000)
+  const handleNextExercise = () => {
+    setWaitingForNext(false)
+    if (currentExerciseIndex < totalExercises - 1) {
+      setCurrentExerciseIndex(currentExerciseIndex + 1)
+    } else {
+      setCurrentStep('complete')
+      markSectionComplete(chapterId, sectionId)
+    }
   }
 
   const handleContinue = () => {
@@ -246,6 +248,32 @@ export default function SectionPage({
               exercise={currentExercise}
               onComplete={handleExerciseComplete}
             />
+
+            {/* Next Question Button */}
+            {waitingForNext && (
+              <div className="flex justify-center">
+                <button
+                  onClick={handleNextExercise}
+                  className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition transform hover:scale-105 flex items-center gap-2"
+                >
+                  {currentExerciseIndex < totalExercises - 1 ? (
+                    <>
+                      <span>Question suivante</span>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </>
+                  ) : (
+                    <>
+                      <span>Voir mes résultats</span>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
 
             {/* Exercise Progress */}
             <div className="flex justify-center gap-2 mt-8">

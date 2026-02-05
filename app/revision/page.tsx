@@ -23,6 +23,7 @@ export default function RevisionPage() {
   const [selectedExercises, setSelectedExercises] = useState<ExerciseWithMeta[]>([])
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0)
   const [results, setResults] = useState<boolean[]>([])
+  const [waitingForNext, setWaitingForNext] = useState(false)
   const [difficulty, setDifficulty] = useState<'all' | 'easy' | 'medium' | 'hard'>('all')
   const [quizSize, setQuizSize] = useState(5)
 
@@ -48,14 +49,16 @@ export default function RevisionPage() {
   const handleExerciseComplete = (correct: boolean) => {
     const newResults = [...results, correct]
     setResults(newResults)
+    setWaitingForNext(true)
+  }
 
-    setTimeout(() => {
-      if (currentExerciseIndex < selectedExercises.length - 1) {
-        setCurrentExerciseIndex(currentExerciseIndex + 1)
-      } else {
-        setMode('results')
-      }
-    }, 2000)
+  const handleNextExercise = () => {
+    setWaitingForNext(false)
+    if (currentExerciseIndex < selectedExercises.length - 1) {
+      setCurrentExerciseIndex(currentExerciseIndex + 1)
+    } else {
+      setMode('results')
+    }
   }
 
   const currentExercise = selectedExercises[currentExerciseIndex]
@@ -223,6 +226,32 @@ export default function RevisionPage() {
               exercise={currentExercise}
               onComplete={handleExerciseComplete}
             />
+
+            {/* Next Question Button */}
+            {waitingForNext && (
+              <div className="flex justify-center">
+                <button
+                  onClick={handleNextExercise}
+                  className="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:from-cyan-400 hover:to-purple-500 transition transform hover:scale-105 flex items-center gap-2"
+                >
+                  {currentExerciseIndex < selectedExercises.length - 1 ? (
+                    <>
+                      <span>Question suivante</span>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </>
+                  ) : (
+                    <>
+                      <span>Voir mes résultats</span>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
 
             {/* Dots */}
             <div className="flex justify-center gap-2">
