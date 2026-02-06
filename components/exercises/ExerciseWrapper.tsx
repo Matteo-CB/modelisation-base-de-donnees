@@ -6,6 +6,7 @@ import TrueFalseExercise from './TrueFalseExercise'
 import MatchingExercise from './MatchingExercise'
 import FillBlankExercise from './FillBlankExercise'
 import OrderingExercise from './OrderingExercise'
+import DragDropExercise from './DragDropExercise'
 
 interface ExerciseWrapperProps {
   exercise: Exercise
@@ -25,9 +26,15 @@ export default function ExerciseWrapper({ exercise, onComplete }: ExerciseWrappe
     case 'ordering':
       return <OrderingExercise exercise={exercise} onComplete={onComplete} />
     case 'drag-drop':
-      // For drag-drop, we'll use the QCM component for simplicity
+      return <DragDropExercise exercise={exercise} onComplete={onComplete} />
+    case 'code-complete':
+      // code-complete uses QCM as fallback for now
       return <QCMExercise exercise={exercise} onComplete={onComplete} />
-    default:
-      return <QCMExercise exercise={exercise} onComplete={onComplete} />
+    default: {
+      // Exhaustive check: if TypeScript doesn't error here, we missed a type
+      const _exhaustive: never = exercise.type
+      console.error(`Unknown exercise type: ${_exhaustive}`)
+      return null
+    }
   }
 }
