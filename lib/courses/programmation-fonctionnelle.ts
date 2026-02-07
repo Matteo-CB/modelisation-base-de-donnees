@@ -165,14 +165,14 @@ Contrairement aux structures rigides, les structures souples :
 - CDR pointe vers le reste de la structure
 
 **Représentation en mémoire :**
-\`\`\`
+${'```'}
 ┌─────┬─────┐
 │ CAR │ CDR │
 └──┬──┴──┬──┘
    │     │
    ↓     ↓
  valeur  suite
-\`\`\`
+${'```'}
 
 **Liste chaînée :**
 Une liste est une séquence de doublets où chaque CDR pointe vers le doublet suivant.`,
@@ -323,9 +323,9 @@ Chaque objet devient une **liste d'associations** (map/dictionnaire).`,
 **Représentation parenthésée :**
 
 En Lisp, on représente une arborescence avec des parenthèses :
-\`\`\`lisp
+${'```'}lisp
 (A (B (E) (F)) (C (G)) (D (H) (I)))
-\`\`\`
+${'```'}
 
 Cette notation représente :
 - A est la racine
@@ -341,14 +341,14 @@ Une liste d'associations est une arborescence à trois niveaux :
 3. **Feuilles** : valeurs ou méthodes
 
 **Exemple d'objet :**
-\`\`\`lisp
+${'```'}lisp
 (Dupont
   (taille 180)
   (aime Duchmol)
   (deteste Truc)
   (est-un informaticien)
   (reaction-aux-blagues rigole))
-\`\`\`
+${'```'}
 
 **Avantages :**
 - **Accès par nom** (clé) plutôt que par position
@@ -505,29 +505,29 @@ Un **processus** est une activité qui se déroule dans la machine :
 **1. Séquence**
 - Exécution l'une après l'autre
 - Ordre important
-\`\`\`lisp
+${'```'}lisp
 (progn
   (instruction1)
   (instruction2)
   (instruction3))
-\`\`\`
+${'```'}
 
 **2. Alternative (conditionnelle)**
 - Choix entre plusieurs branches
 - Basé sur une condition
-\`\`\`lisp
+${'```'}lisp
 (if condition
     alors
     sinon)
-\`\`\`
+${'```'}
 
 **3. Itération (boucle)**
 - Répétition d'un processus
 - Tant qu'une condition est vraie
-\`\`\`lisp
+${'```'}lisp
 (loop while condition
   do (corps))
-\`\`\`
+${'```'}
 
 **Combinaison des structures :**
 
@@ -628,13 +628,13 @@ En programmation fonctionnelle, on privilégie la **récursivité** aux boucles 
 **Implémentation en Lisp :**
 
 **Pile :**
-\`\`\`lisp
+${'```'}lisp
 ; Empiler
 (push element pile)
 
 ; Dépiler
 (pop pile)
-\`\`\`
+${'```'}
 
 **Queue :**
 On utilise deux pointeurs : tête et queue`,
@@ -707,7 +707,7 @@ Quand une fonction est appelée :
 
 **Exemple d'appels imbriqués :**
 
-\`\`\`lisp
+${'```'}lisp
 (defun f (x)
   (+ x 1))
 
@@ -715,10 +715,10 @@ Quand une fonction est appelée :
   (f (* x 2)))
 
 (g 5)
-\`\`\`
+${'```'}
 
 **État de la pile :**
-\`\`\`
+${'```'}
 ┌─────────────┐
 │ f(10)       │ ← Sommet
 ├─────────────┤
@@ -726,7 +726,7 @@ Quand une fonction est appelée :
 ├─────────────┤
 │ toplevel    │
 └─────────────┘
-\`\`\`
+${'```'}
 
 **Récursivité et pile :**
 
@@ -817,7 +817,7 @@ L'appel récursif est la dernière opération :
 - Écrit dans le tampon de sortie
 
 **La boucle REPL :**
-\`\`\`
+${'```'}
 ┌──────┐
 │ READ │
 └──┬───┘
@@ -831,10 +831,10 @@ L'appel récursif est la dernière opération :
 └───┬───┘
     ↓
   (loop)
-\`\`\`
+${'```'}
 
 **Exemples :**
-\`\`\`lisp
+${'```'}lisp
 > (+ 1 2)
 3
 
@@ -843,17 +843,17 @@ L'appel récursif est la dernière opération :
 
 > (quote a)
 A
-\`\`\`
+${'```'}
 
 **Quote (') :**
 Empêche l'évaluation
-\`\`\`lisp
+${'```'}lisp
 > 'a
 A
 
 > '(1 2 3)
 (1 2 3)
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'REPL : Read-Eval-Print Loop',
             'READ : texte → structure',
@@ -910,14 +910,14 @@ A
           content: `Les **S-expressions** (Symbolic Expressions) sont la syntaxe fondamentale de Lisp.
 
 **Forme générale :**
-\`\`\`lisp
+${'```'}lisp
 (fonction arg1 arg2 ... argN)
-\`\`\`
+${'```'}
 
 **Notation préfixée :**
 
 L'opérateur vient AVANT les opérandes :
-\`\`\`lisp
+${'```'}lisp
 ; Au lieu de : 1 + 2
 (+ 1 2)
 
@@ -926,7 +926,7 @@ L'opérateur vient AVANT les opérandes :
 
 ; Au lieu de : (1 + 2) * 3
 (* (+ 1 2) 3)
-\`\`\`
+${'```'}
 
 **Avantages :**
 - Pas d'ambiguïté (pas besoin de priorité d'opérateurs)
@@ -943,15 +943,15 @@ L'opérateur vient AVANT les opérandes :
 
 **2. Liste**
 - Suite d'éléments entre parenthèses
-- \`\`\`(1 2 3)\`\`\`
-- \`\`\`(a b (c d))\`\`\` (listes imbriquées)
+- ${'```'}(1 2 3)${'```'}
+- ${'```'}(a b (c d))${'```'} (listes imbriquées)
 
 **Exemples :**
-\`\`\`lisp
+${'```'}lisp
 (+ 1 2 3 4 5)           ; 15
 (* 2 (+ 3 4))           ; 14
 (list 'a 'b 'c)         ; (A B C)
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'S-expression : syntaxe de base',
             'Notation préfixée : (op arg1 arg2)',
@@ -1006,22 +1006,22 @@ L'opérateur vient AVANT les opérandes :
 
 **1. Atomes**
 - **Nombres** : s'évaluent en eux-mêmes
-  \`\`\`lisp
+  ${'```'}lisp
   42 → 42
   3.14 → 3.14
-  \`\`\`
+  ${'```'}
 
 - **Symboles** : cherchent leur valeur liée
-  \`\`\`lisp
+  ${'```'}lisp
   (setq x 10)
   x → 10
-  \`\`\`
+  ${'```'}
 
 - **T et NIL** : constantes booléennes
-  \`\`\`lisp
+  ${'```'}lisp
   t → T (vrai)
   nil → NIL (faux et liste vide)
-  \`\`\`
+  ${'```'}
 
 **2. Listes**
 - Le **CAR** (premier élément) est la fonction
@@ -1030,13 +1030,13 @@ L'opérateur vient AVANT les opérandes :
 - La fonction est appliquée aux résultats
 
 **Exemple :**
-\`\`\`lisp
+${'```'}lisp
 (+ (* 2 3) (- 10 5))
 
 1. Évaluer (* 2 3) → 6
 2. Évaluer (- 10 5) → 5
 3. Évaluer (+ 6 5) → 11
-\`\`\`
+${'```'}
 
 **Formes spéciales :**
 
@@ -1046,9 +1046,9 @@ Certaines formes ne suivent pas les règles normales :
 - **SETQ** : le premier argument n'est pas évalué
 
 **Auto-évaluation et eval :**
-\`\`\`lisp
+${'```'}lisp
 (eval (eval '(+ 1 2)))  ; 3
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'Nombres : auto-évaluation',
             'Symboles : cherchent leur valeur',
@@ -1107,46 +1107,46 @@ Certaines formes ne suivent pas les règles normales :
 **SET : liaison avec évaluation**
 
 Avec SET, les deux arguments sont évalués :
-\`\`\`lisp
+${'```'}lisp
 (set 'x 10)      ; Lie X à 10
 x                ; → 10
 
 (set 'y 'x)      ; Lie Y au symbole X
 y                ; → X
 (eval y)         ; → 10
-\`\`\`
+${'```'}
 
 **Attention** : il faut quoter le nom !
 
 **SETQ : quote automatique**
 
 SETQ (SET with Quote) ne quote que le premier argument :
-\`\`\`lisp
+${'```'}lisp
 (setq x 10)      ; Équivalent à (set 'x 10)
 x                ; → 10
 
 (setq y (+ 5 3)) ; Le deuxième argument est évalué
 y                ; → 8
-\`\`\`
+${'```'}
 
 **SETQ est plus pratique dans 99% des cas.**
 
 **Liaisons multiples :**
-\`\`\`lisp
+${'```'}lisp
 (setq a 1
       b 2
       c 3)
-\`\`\`
+${'```'}
 
 **Exemples avancés :**
-\`\`\`lisp
+${'```'}lisp
 (setq x 'foo)
 (setq foo 'bar)
 (eval x)         ; → BAR
 
 (setq liste '(1 2 3))
 (car liste)      ; → 1
-\`\`\`
+${'```'}
 
 **Portée des variables :**
 - **Globales** : définies avec setq au toplevel
@@ -1204,49 +1204,49 @@ y                ; → 8
 **Construction de listes :**
 
 **CONS** : ajoute un élément en tête
-\`\`\`lisp
+${'```'}lisp
 (cons 1 '(2 3))     ; → (1 2 3)
 (cons 'a 'b)        ; → (A . B)  (paire pointée)
-\`\`\`
+${'```'}
 
 **LIST** : crée une liste
-\`\`\`lisp
+${'```'}lisp
 (list 1 2 3)        ; → (1 2 3)
 (list 'a (+ 1 2))   ; → (A 3)
-\`\`\`
+${'```'}
 
 **Accès aux éléments :**
 
 **CAR** : premier élément
-\`\`\`lisp
+${'```'}lisp
 (car '(a b c))      ; → A
-\`\`\`
+${'```'}
 
 **CDR** : reste de la liste
-\`\`\`lisp
+${'```'}lisp
 (cdr '(a b c))      ; → (B C)
-\`\`\`
+${'```'}
 
 **Combinaisons :**
-\`\`\`lisp
+${'```'}lisp
 (cadr '(a b c))     ; = (car (cdr ...)) → B
 (caddr '(a b c))    ; = (car (cdr (cdr ...))) → C
-\`\`\`
+${'```'}
 
 **NIL : liste vide**
-\`\`\`lisp
+${'```'}lisp
 '()                 ; → NIL
 nil                 ; → NIL
 (car nil)           ; → NIL
 (cdr nil)           ; → NIL
-\`\`\`
+${'```'}
 
 **Tests sur les listes :**
-\`\`\`lisp
+${'```'}lisp
 (null '())          ; → T
 (listp '(a b))      ; → T
 (atom 'a)           ; → T
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'CONS : ajoute en tête',
             'LIST : crée une liste',
@@ -1314,57 +1314,57 @@ nil                 ; → NIL
           content: `**DEFUN** permet de définir des fonctions en Lisp.
 
 **Syntaxe :**
-\`\`\`lisp
+${'```'}lisp
 (defun nom-fonction (paramètres)
   corps)
-\`\`\`
+${'```'}
 
 **Exemple simple :**
-\`\`\`lisp
+${'```'}lisp
 (defun carre (x)
   (* x x))
 
 (carre 5)  ; → 25
-\`\`\`
+${'```'}
 
 **Fonction avec plusieurs paramètres :**
-\`\`\`lisp
+${'```'}lisp
 (defun somme (a b)
   (+ a b))
 
 (somme 3 4)  ; → 7
-\`\`\`
+${'```'}
 
 **Fonction sans paramètre :**
-\`\`\`lisp
+${'```'}lisp
 (defun dire-bonjour ()
   "Bonjour !")
 
 (dire-bonjour)  ; → "Bonjour !"
-\`\`\`
+${'```'}
 
 **Valeur de retour :**
 
 La dernière expression évaluée est retournée :
-\`\`\`lisp
+${'```'}lisp
 (defun moyenne (a b)
   (/ (+ a b) 2))
 
 (moyenne 10 20)  ; → 15
-\`\`\`
+${'```'}
 
 **Fonctions locales avec LABELS :**
-\`\`\`lisp
+${'```'}lisp
 (labels ((helper (x) (* x 2)))
   (helper 5))  ; → 10
-\`\`\`
+${'```'}
 
 **Documentation :**
-\`\`\`lisp
+${'```'}lisp
 (defun aire-carre (cote)
   "Calcule l'aire d'un carré"
   (* cote cote))
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'DEFUN : définir une fonction',
             'Paramètres entre parenthèses',
@@ -1428,17 +1428,17 @@ Une fonction récursive s'appelle elle-même jusqu'à atteindre un **cas de base
 2. **Cas récursif** : appel à soi-même avec un argument plus simple
 
 **Exemple : factorielle**
-\`\`\`lisp
+${'```'}lisp
 (defun factorielle (n)
   (if (<= n 1)
       1                        ; Cas de base
       (* n (factorielle (- n 1)))))  ; Cas récursif
 
 (factorielle 5)  ; → 120
-\`\`\`
+${'```'}
 
 **Trace de l'exécution :**
-\`\`\`
+${'```'}
 (factorielle 5)
 → (* 5 (factorielle 4))
 → (* 5 (* 4 (factorielle 3)))
@@ -1446,17 +1446,17 @@ Une fonction récursive s'appelle elle-même jusqu'à atteindre un **cas de base
 → (* 5 (* 4 (* 3 (* 2 (factorielle 1)))))
 → (* 5 (* 4 (* 3 (* 2 1))))
 → 120
-\`\`\`
+${'```'}
 
 **Exemple : longueur de liste**
-\`\`\`lisp
+${'```'}lisp
 (defun longueur (liste)
   (if (null liste)
       0                           ; Cas de base
       (+ 1 (longueur (cdr liste)))))  ; Cas récursif
 
 (longueur '(a b c))  ; → 3
-\`\`\`
+${'```'}
 
 **Récursivité vs itération :**
 
@@ -1530,7 +1530,7 @@ L'appel récursif est la **dernière opération** :
 On passe le résultat partiel en paramètre.
 
 **Exemple : factorielle terminale**
-\`\`\`lisp
+${'```'}lisp
 (defun fact-term (n acc)
   (if (<= n 1)
       acc
@@ -1540,19 +1540,19 @@ On passe le résultat partiel en paramètre.
   (fact-term n 1))
 
 (factorielle 5)  ; → 120
-\`\`\`
+${'```'}
 
 **Comparaison :**
 
 **Non terminale :**
-\`\`\`lisp
+${'```'}lisp
 (* 5 (fact 4))  ; Il faut garder le *
 (* 5 (* 4 (fact 3)))
 → empile des opérations
-\`\`\`
+${'```'}
 
 **Terminale :**
-\`\`\`lisp
+${'```'}lisp
 (fact-term 5 1)
 (fact-term 4 5)
 (fact-term 3 20)
@@ -1560,10 +1560,10 @@ On passe le résultat partiel en paramètre.
 (fact-term 1 120)
 → 120
 → pas d'empilement
-\`\`\`
+${'```'}
 
 **Somme de liste terminale :**
-\`\`\`lisp
+${'```'}lisp
 (defun somme-aux (liste acc)
   (if (null liste)
       acc
@@ -1572,7 +1572,7 @@ On passe le résultat partiel en paramètre.
 
 (defun somme (liste)
   (somme-aux liste 0))
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'Appel récursif = dernière opération',
             'Accumulateur : résultat partiel',
@@ -1625,51 +1625,51 @@ On passe le résultat partiel en paramètre.
           content: `Lisp propose des fonctions puissantes pour manipuler les listes.
 
 **APPEND : concaténer des listes**
-\`\`\`lisp
+${'```'}lisp
 (append '(1 2) '(3 4))     ; → (1 2 3 4)
 (append '(a) '(b) '(c))    ; → (A B C)
-\`\`\`
+${'```'}
 
 **REVERSE : inverser une liste**
-\`\`\`lisp
+${'```'}lisp
 (reverse '(1 2 3))         ; → (3 2 1)
-\`\`\`
+${'```'}
 
 **LENGTH : longueur**
-\`\`\`lisp
+${'```'}lisp
 (length '(a b c d))        ; → 4
-\`\`\`
+${'```'}
 
 **NTH : nième élément (base 0)**
-\`\`\`lisp
+${'```'}lisp
 (nth 0 '(a b c))           ; → A
 (nth 2 '(a b c))           ; → C
-\`\`\`
+${'```'}
 
 **MEMBER : chercher un élément**
-\`\`\`lisp
+${'```'}lisp
 (member 'b '(a b c))       ; → (B C)
 (member 'x '(a b c))       ; → NIL
-\`\`\`
+${'```'}
 
 **REMOVE : enlever un élément**
-\`\`\`lisp
+${'```'}lisp
 (remove 'b '(a b c b))     ; → (A C)
-\`\`\`
+${'```'}
 
 **SUBST : substituer**
-\`\`\`lisp
+${'```'}lisp
 (subst 'x 'b '(a b c b))   ; → (A X C X)
-\`\`\`
+${'```'}
 
 **Implémenter APPEND récursivement :**
-\`\`\`lisp
+${'```'}lisp
 (defun mon-append (l1 l2)
   (if (null l1)
       l2
       (cons (car l1)
             (mon-append (cdr l1) l2))))
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'APPEND : concaténer',
             'REVERSE : inverser',
@@ -1737,18 +1737,18 @@ On passe le résultat partiel en paramètre.
 Contrairement aux fonctions pures qui créent de nouvelles structures, les fonctions destructives modifient les structures existantes.
 
 **RPLACA** : remplace le CAR
-\`\`\`lisp
+${'```'}lisp
 (setq liste '(a b c))
 (rplaca liste 'x)  ; Modifie le CAR
 liste              ; → (X B C)
-\`\`\`
+${'```'}
 
 **RPLACD** : remplace le CDR
-\`\`\`lisp
+${'```'}lisp
 (setq liste '(a b c))
 (rplacd liste '(y z))
 liste              ; → (A Y Z)
-\`\`\`
+${'```'}
 
 **Avantages :**
 - Plus efficace (pas de copie)
@@ -1761,12 +1761,12 @@ liste              ; → (A Y Z)
 - Difficile à déboguer
 
 **Exemple de partage :**
-\`\`\`lisp
+${'```'}lisp
 (setq l1 '(a b c))
 (setq l2 l1)        ; Partage la même structure
 (rplaca l1 'x)
 l2                  ; → (X B C) aussi modifié !
-\`\`\`
+${'```'}
 
 **Quand utiliser :**
 - Performance critique
@@ -1812,50 +1812,50 @@ l2                  ; → (X B C) aussi modifié !
           content: `Les **fonctions d'ordre supérieur** sont des fonctions qui manipulent d'autres fonctions.
 
 **MAPCAR** : applique une fonction à chaque élément
-\`\`\`lisp
+${'```'}lisp
 (mapcar #'(lambda (x) (* x 2)) '(1 2 3))
 ; → (2 4 6)
 
 (defun carre (x) (* x x))
 (mapcar #'carre '(1 2 3 4))
 ; → (1 4 9 16)
-\`\`\`
+${'```'}
 
 **APPLY** : applique une fonction à une liste d'arguments
-\`\`\`lisp
+${'```'}lisp
 (apply #'+ '(1 2 3 4))    ; → 10
 (apply #'max '(5 2 9 1))  ; → 9
-\`\`\`
+${'```'}
 
 **FUNCALL** : appelle une fonction
-\`\`\`lisp
+${'```'}lisp
 (funcall #'+ 1 2 3)       ; → 6
 (funcall #'car '(a b c))  ; → A
-\`\`\`
+${'```'}
 
 **REDUCE** : réduit une liste avec une fonction
-\`\`\`lisp
+${'```'}lisp
 (reduce #'+ '(1 2 3 4))   ; → 10
 (reduce #'* '(2 3 4))     ; → 24
-\`\`\`
+${'```'}
 
 **FILTER (REMOVE-IF-NOT)** : filtre une liste
-\`\`\`lisp
+${'```'}lisp
 (remove-if-not #'evenp '(1 2 3 4 5 6))
 ; → (2 4 6)
 
 (remove-if-not #'(lambda (x) (> x 5)) '(3 8 2 9 4))
 ; → (8 9)
-\`\`\`
+${'```'}
 
 **Composition de fonctions :**
-\`\`\`lisp
+${'```'}lisp
 (defun compose (f g)
   #'(lambda (x) (funcall f (funcall g x))))
 
 (funcall (compose #'1+ #'(lambda (x) (* x 2))) 5)
 ; → 11  (d'abord *2 → 10, puis +1 → 11)
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'Fonctions qui manipulent des fonctions',
             'MAPCAR : applique à chaque élément',
@@ -1911,7 +1911,7 @@ l2                  ; → (X B C) aussi modifié !
 - Retourne du CODE qui sera évalué
 
 **DEFMACRO** : définir une macro
-\`\`\`lisp
+${'```'}lisp
 (defmacro when (condition &rest body)
   \`(if ,condition
        (progn ,@body)))
@@ -1919,7 +1919,7 @@ l2                  ; → (X B C) aussi modifié !
 (when (> x 5)
   (print "grand")
   (print "très grand"))
-\`\`\`
+${'```'}
 
 **Backquote (\`) et virgule (,) :**
 
@@ -1928,21 +1928,21 @@ l2                  ; → (X B C) aussi modifié !
 - **,@** (virgule-arobase) : épissage de liste
 
 **Exemple :**
-\`\`\`lisp
+${'```'}lisp
 (setq x 5)
 \`(a b ,x c)      ; → (A B 5 C)
 \`(a b ,@'(1 2))  ; → (A B 1 2)
-\`\`\`
+${'```'}
 
 **Macro UNLESS :**
-\`\`\`lisp
+${'```'}lisp
 (defmacro unless (condition &rest body)
   \`(if (not ,condition)
        (progn ,@body)))
 
 (unless (< x 0)
   (print "positif"))
-\`\`\`
+${'```'}
 
 **Pourquoi les macros ?**
 - Créer de nouvelles structures de contrôle
@@ -1998,41 +1998,41 @@ l2                  ; → (X B C) aussi modifié !
           content: `Les **fonctions lambda** sont des fonctions sans nom.
 
 **Syntaxe :**
-\`\`\`lisp
+${'```'}lisp
 (lambda (paramètres) corps)
-\`\`\`
+${'```'}
 
 **Utilisation directe :**
-\`\`\`lisp
+${'```'}lisp
 ((lambda (x) (* x 2)) 5)  ; → 10
-\`\`\`
+${'```'}
 
 **Avec des fonctions d'ordre supérieur :**
-\`\`\`lisp
+${'```'}lisp
 (mapcar #'(lambda (x) (* x x)) '(1 2 3 4))
 ; → (1 4 9 16)
 
 (remove-if-not #'(lambda (x) (> x 5)) '(3 8 2 9))
 ; → (8 9)
-\`\`\`
+${'```'}
 
 **Stocker dans une variable :**
-\`\`\`lisp
+${'```'}lisp
 (setq double #'(lambda (x) (* x 2)))
 (funcall double 7)  ; → 14
-\`\`\`
+${'```'}
 
 **Fermetures (closures) :**
 
 Une lambda peut capturer les variables de son environnement :
-\`\`\`lisp
+${'```'}lisp
 (defun make-adder (n)
   #'(lambda (x) (+ x n)))
 
 (setq add5 (make-adder 5))
 (funcall add5 10)  ; → 15
 (funcall add5 3)   ; → 8
-\`\`\`
+${'```'}
 
 **Quand utiliser :**
 - Fonctions one-shot (usage unique)
@@ -2084,14 +2084,14 @@ Une lambda peut capturer les variables de son environnement :
           content: `Les **listes d'associations** (alists) sont un moyen puissant d'organiser des données.
 
 **Structure :**
-\`\`\`lisp
+${'```'}lisp
 ((clé1 . valeur1)
  (clé2 . valeur2)
  (clé3 . valeur3))
-\`\`\`
+${'```'}
 
 **ASSOC** : chercher par clé
-\`\`\`lisp
+${'```'}lisp
 (setq contacts
   '((nom . "Dupont")
     (age . 30)
@@ -2099,23 +2099,23 @@ Une lambda peut capturer les variables de son environnement :
 
 (assoc 'nom contacts)    ; → (NOM . "Dupont")
 (cdr (assoc 'age contacts))  ; → 30
-\`\`\`
+${'```'}
 
 **ACONS** : ajouter une association
-\`\`\`lisp
+${'```'}lisp
 (acons 'email "dupont@mail.fr" contacts)
 ; → ((EMAIL . "dupont@mail.fr")
 ;     (NOM . "Dupont")
 ;     (AGE . 30)
 ;     (VILLE . "Paris"))
-\`\`\`
+${'```'}
 
 **Modification :**
-\`\`\`lisp
+${'```'}lisp
 (setq contacts
   (acons 'age 31
     (remove (assoc 'age contacts) contacts)))
-\`\`\`
+${'```'}
 
 **Tables de hachage alternatives :**
 
@@ -2123,7 +2123,7 @@ Alists simples mais moins performantes pour grandes données.
 Pour performances : utiliser hash-tables.
 
 **Exemple complet :**
-\`\`\`lisp
+${'```'}lisp
 (defun get-property (obj key)
   (cdr (assoc key obj)))
 
@@ -2133,7 +2133,7 @@ Pour performances : utiliser hash-tables.
 
 (setq person '((name . "Alice") (age . 25)))
 (get-property person 'name)  ; → "Alice"
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'Alist : liste de paires (clé . valeur)',
             'ASSOC : recherche par clé',
@@ -2177,38 +2177,38 @@ Pour performances : utiliser hash-tables.
           content: `Les **listes de propriétés** (plists) sont une alternative aux alists.
 
 **Structure :**
-\`\`\`lisp
+${'```'}lisp
 (clé1 valeur1 clé2 valeur2 clé3 valeur3)
-\`\`\`
+${'```'}
 
 **GETF** : obtenir une valeur
-\`\`\`lisp
+${'```'}lisp
 (setq person '(:nom "Martin" :age 28 :ville "Lyon"))
 
 (getf person :nom)   ; → "Martin"
 (getf person :age)   ; → 28
-\`\`\`
+${'```'}
 
 **SETF avec GETF** : modifier
-\`\`\`lisp
+${'```'}lisp
 (setf (getf person :age) 29)
 person  ; → (:NOM "Martin" :AGE 29 :VILLE "Lyon")
-\`\`\`
+${'```'}
 
 **REMF** : supprimer une propriété
-\`\`\`lisp
+${'```'}lisp
 (remf person :ville)
 person  ; → (:NOM "Martin" :AGE 29)
-\`\`\`
+${'```'}
 
 **Symboles et propriétés :**
 
 En Common Lisp, chaque symbole a une plist :
-\`\`\`lisp
+${'```'}lisp
 (setf (get 'alice 'age) 25)
 (setf (get 'alice 'job) "Engineer")
 (get 'alice 'age)  ; → 25
-\`\`\`
+${'```'}
 
 **Plist vs Alist :**
 
@@ -2271,15 +2271,15 @@ En Common Lisp, chaque symbole a une plist :
 - Fonctions destructives : préfixe \`n\` comme \`nreverse\`, \`nconc\`
 
 **2. Indentation :**
-\`\`\`lisp
+${'```'}lisp
 (defun factorial (n)
   (if (<= n 1)
       1
       (* n (factorial (- n 1)))))
-\`\`\`
+${'```'}
 
 **3. Commentaires :**
-\`\`\`lisp
+${'```'}lisp
 ;;; Section
 ;; Fonction/paragraphe
 ; Ligne de code
@@ -2287,7 +2287,7 @@ En Common Lisp, chaque symbole a une plist :
 (defun add (a b)
   "Additionne deux nombres"  ; Docstring
   (+ a b))  ; Addition
-\`\`\`
+${'```'}
 
 **4. Préférer les fonctions pures :**
 - Sans effets de bord
@@ -2295,23 +2295,23 @@ En Common Lisp, chaque symbole a une plist :
 - Plus facile à tester et déboguer
 
 **5. Utiliser LET pour variables locales :**
-\`\`\`lisp
+${'```'}lisp
 (let ((x 10)
       (y 20))
   (+ x y))
-\`\`\`
+${'```'}
 
 **6. Éviter le code global :**
 - Encapsuler dans des fonctions
 - Limiter les variables globales
 
 **7. Tests :**
-\`\`\`lisp
+${'```'}lisp
 (defun test-factorial ()
   (assert (= (factorial 0) 1))
   (assert (= (factorial 5) 120))
   "All tests passed")
-\`\`\``,
+${'```'}`,
           keyPoints: [
             'Nommage cohérent',
             'Indentation correcte',
