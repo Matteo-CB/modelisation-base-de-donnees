@@ -1,8 +1,10 @@
 import { Course } from '../types'
 import { modelisationBDD } from './modelisation-bdd'
+import { programmationFonctionnelle } from './programmation-fonctionnelle'
 
 export const courses: Course[] = [
-  modelisationBDD
+  modelisationBDD,
+  programmationFonctionnelle
 ]
 
 export function getCourse(id: string): Course | undefined {
@@ -36,7 +38,22 @@ export function getAllExercises(courseId: string) {
   )
 }
 
-export function getExercisesForRevision(courseId: string, completedSections: string[]) {
-  const allExercises = getAllExercises(courseId)
-  return allExercises.filter(ex => completedSections.includes(ex.sectionId))
+export function getExercisesForRevision(courseIds: string[], completedSectionsByCourse: Record<string, string[]>) {
+  const exercises: any[] = []
+
+  courseIds.forEach(courseId => {
+    const completedSections = completedSectionsByCourse[courseId] || []
+    const allExercises = getAllExercises(courseId)
+    const filtered = allExercises.filter(ex => completedSections.includes(ex.sectionId))
+
+    filtered.forEach(ex => {
+      exercises.push({
+        ...ex,
+        courseId,
+        courseTitle: getCourse(courseId)?.title || ''
+      })
+    })
+  })
+
+  return exercises
 }

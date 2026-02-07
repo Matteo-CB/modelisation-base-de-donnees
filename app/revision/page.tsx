@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import { courses, getExercisesForRevision } from '@/lib/courses'
-import { useProgress } from '@/hooks/useProgress'
+import { useAllCoursesProgress } from '@/hooks/useAllCoursesProgress'
 import { ExerciseWrapper } from '@/components/exercises'
 import { Exercise } from '@/lib/types'
 
@@ -13,11 +13,12 @@ interface ExerciseWithMeta extends Exercise {
   sectionId: string
   chapterTitle: string
   sectionTitle: string
+  courseId: string
+  courseTitle: string
 }
 
 export default function RevisionPage() {
-  const course = courses[0]
-  const { getCompletedSections, loading } = useProgress(course.id)
+  const { progressByCourse, loading } = useAllCoursesProgress()
 
   const [mode, setMode] = useState<'select' | 'quiz' | 'results'>('select')
   const [selectedExercises, setSelectedExercises] = useState<ExerciseWithMeta[]>([])
@@ -26,16 +27,38 @@ export default function RevisionPage() {
   const [waitingForNext, setWaitingForNext] = useState(false)
   const [difficulty, setDifficulty] = useState<'all' | 'easy' | 'medium' | 'hard'>('all')
   const [quizSize, setQuizSize] = useState(5)
+  const [selectedCourseIds, setSelectedCourseIds] = useState<string[]>(courses.map(c => c.id))
 
-  const completedSections = getCompletedSections()
+  const completedSectionsByCourse = progressByCourse
+
   const allExercises = useMemo(() => {
-    return getExercisesForRevision(course.id, completedSections) as ExerciseWithMeta[]
-  }, [course.id, completedSections])
+    return getExercisesForRevision(selectedCourseIds, completedSectionsByCourse) as ExerciseWithMeta[]
+  }, [selectedCourseIds, completedSectionsByCourse])
 
   const filteredExercises = useMemo(() => {
     if (difficulty === 'all') return allExercises
     return allExercises.filter(ex => ex.difficulty === difficulty)
   }, [allExercises, difficulty])
+
+  const totalCompletedSections = Object.values(completedSectionsByCourse).reduce((sum, sections) => sum + sections.length, 0)
+
+  const toggleCourse = (courseId: string) => {
+    setSelectedCourseIds(prev => {
+      if (prev.includes(courseId)) {
+        return prev.filter(id => id !== courseId)
+      } else {
+        return [...prev, courseId]
+      }
+    })
+  }
+
+  const toggleAllCourses = () => {
+    if (selectedCourseIds.length === courses.length) {
+      setSelectedCourseIds([])
+    } else {
+      setSelectedCourseIds(courses.map(c => c.id))
+    }
+  }
 
   const startQuiz = () => {
     const shuffled = [...filteredExercises].sort(() => Math.random() - 0.5)
@@ -91,18 +114,18 @@ export default function RevisionPage() {
               </p>
             </div>
 
-            {completedSections.length === 0 ? (
+            {totalCompletedSections === 0 ? (
               <div className="bg-white/5 rounded-2xl border border-white/10 p-8 text-center">
                 <span className="text-5xl mb-4 block">📚</span>
                 <h2 className="text-xl font-bold text-white mb-2">Aucune section terminée</h2>
                 <p className="text-white/60 mb-6">
-                  Commence par étudier quelques sections du cours pour débloquer le mode révision !
+                  Commence par étudier quelques sections des cours pour débloquer le mode révision !
                 </p>
                 <Link
-                  href={`/cours/${course.id}`}
+                  href="/"
                   className="inline-block px-6 py-3 bg-cyan-500 text-white font-bold rounded-xl hover:bg-cyan-400 transition"
                 >
-                  Commencer le cours
+                  Voir les cours
                 </Link>
               </div>
             ) : (
@@ -110,7 +133,7 @@ export default function RevisionPage() {
                 {/* Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="bg-white/5 rounded-xl p-6 text-center">
-                    <div className="text-3xl font-bold text-cyan-400">{completedSections.length}</div>
+                    <div className="text-3xl font-bold text-cyan-400">{totalCompletedSections}</div>
                     <div className="text-white/60 text-sm">Sections terminées</div>
                   </div>
                   <div className="bg-white/5 rounded-xl p-6 text-center">
@@ -126,6 +149,61 @@ export default function RevisionPage() {
                 {/* Settings */}
                 <div className="bg-white/5 rounded-2xl border border-white/10 p-6 space-y-6">
                   <h2 className="text-lg font-bold text-white">Paramètres du quiz</h2>
+
+                  {/* Course Selection */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="block text-white/60 text-sm">Cours sélectionnés</label>
+                      <button
+                        onClick={toggleAllCourses}
+                        className="text-xs text-cyan-400 hover:text-cyan-300 transition"
+                      >
+                        {selectedCourseIds.length === courses.length ? 'Tout désélectionner' : 'Tout sélectionner'}
+                      </button>
+                    </div>
+                    <div className="space-y-2">
+                      {courses.map(course => {
+                        const courseCompleted = completedSectionsByCourse[course.id]?.length || 0
+                        const isSelected = selectedCourseIds.includes(course.id)
+                        const isDisabled = courseCompleted === 0
+
+                        return (
+                          <button
+                            key={course.id}
+                            onClick={() => !isDisabled && toggleCourse(course.id)}
+                            disabled={isDisabled}
+                            className={`w-full flex items-center gap-3 p-3 rounded-lg transition ${
+                              isDisabled
+                                ? 'opacity-40 cursor-not-allowed bg-white/5'
+                                : isSelected
+                                ? 'bg-cyan-500/20 border border-cyan-500/50'
+                                : 'bg-white/10 hover:bg-white/15'
+                            }`}
+                          >
+                            <div className={`w-5 h-5 rounded border-2 flex items-center justify-center ${
+                              isDisabled
+                                ? 'border-white/20'
+                                : isSelected
+                                ? 'bg-cyan-500 border-cyan-500'
+                                : 'border-white/40'
+                            }`}>
+                              {isSelected && (
+                                <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                </svg>
+                              )}
+                            </div>
+                            <div className="flex-1 text-left">
+                              <div className="text-white font-medium text-sm">{course.title}</div>
+                              <div className="text-white/50 text-xs">
+                                {courseCompleted} section{courseCompleted > 1 ? 's' : ''} terminée{courseCompleted > 1 ? 's' : ''}
+                              </div>
+                            </div>
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
 
                   {/* Difficulty */}
                   <div>
@@ -217,7 +295,7 @@ export default function RevisionPage() {
 
             {/* Context */}
             <div className="text-center text-white/50 text-sm">
-              {currentExercise.chapterTitle} → {currentExercise.sectionTitle}
+              {currentExercise.courseTitle} → {currentExercise.chapterTitle} → {currentExercise.sectionTitle}
             </div>
 
             {/* Exercise */}
