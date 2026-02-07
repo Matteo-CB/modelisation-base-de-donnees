@@ -2,1219 +2,1983 @@ import { Course } from '../types'
 
 export const programmationFonctionnelle: Course = {
   id: 'programmation-fonctionnelle',
-  title: 'Programmation Fonctionnelle avec OCaml',
-  description: 'Cours complet sur la programmation fonctionnelle, le lambda-calcul et OCaml',
+  title: 'Programmation Fonctionnelle avec Lisp',
+  description: 'Cours complet sur la programmation fonctionnelle et le langage Lisp (Common Lisp)',
   createdAt: '2024-01-01',
   chapters: [
     {
-      id: 'ch1-introduction',
-      title: 'Introduction à la Programmation Fonctionnelle',
-      description: 'Découvrez les paradigmes de programmation et les concepts fondamentaux',
-      icon: '🎯',
-      color: 'bg-purple-600/20',
+      id: 'ch1-structures-donnees',
+      title: 'Introduction aux Structures de Données',
+      description: 'Comprendre les structures de données du point de vue de la machine et du problème',
+      icon: '🏗️',
+      color: 'bg-blue-600/20',
       sections: [
         {
-          id: 'sec1-1-paradigmes',
-          title: 'Les paradigmes de programmation',
-          content: `Un **paradigme de programmation** est une façon d'aborder la programmation et d'organiser le code.
+          id: 'sec1-1-introduction',
+          title: 'Introduction aux structures de données',
+          content: `Une **structure de données** est un ensemble de liaisons entre données qui se rapportent à différents aspects d'un même problème, pour les regrouper en une donnée complexe.
 
-**Les principaux paradigmes :**
+**Deux manières de concevoir les structures :**
 
-**1. Programmation Impérative**
-- Décrit **comment** faire les choses (étape par étape)
-- Utilise des variables et des instructions qui modifient l'état
-- Exemple : C, Pascal, Java
+1. **Point de vue de la machine** : partir du plus élémentaire (bits) pour aller vers le plus complexe
+2. **Point de vue du problème** : partir de l'expression naturelle et réduire jusqu'à une structure compréhensible par la machine
 
-**2. Programmation Fonctionnelle**
-- Décrit **quoi** calculer plutôt que comment
-- Utilise des fonctions pures sans effet de bord
-- Les fonctions sont des valeurs comme les autres
-- Exemple : OCaml, Haskell, Lisp
+**Données élémentaires :**
+- Les caractères (bytes) sont les unités de base
+- La mémoire est une séquence de bits (0 et 1)
+- Les bits sont regroupés pour former des unités plus grandes
 
-**3. Programmation Orientée Objet**
-- Organise le code autour d'objets
-- Encapsulation, héritage, polymorphisme
-- Exemple : Java, C++, Python`,
+**Objectif :**
+Traiter des problèmes complexes comme la simulation d'environnements réalistes en organisant les données de manière efficace.`,
           keyPoints: [
-            'Impératif : comment faire (étapes)',
-            'Fonctionnel : quoi calculer (fonctions)',
-            'Objet : organisation en objets',
-            'Chaque paradigme a ses avantages'
+            'Structure de données = liaisons entre données',
+            'Deux points de vue : machine et problème',
+            'Données élémentaires : caractères et bits',
+            'Organisation pour traiter la complexité'
           ],
-          tip: 'La programmation fonctionnelle privilégie l\'immuabilité : on ne modifie pas les données, on en crée de nouvelles.',
           exercises: [
             {
               id: 'ex1-1-1',
               type: 'qcm',
-              question: 'Quelle est la caractéristique principale de la programmation fonctionnelle ?',
+              question: 'Qu\'est-ce qu\'une structure de données ?',
               options: [
-                'Utiliser des classes et des objets',
-                'Modifier des variables en boucle',
-                'Utiliser des fonctions pures sans effet de bord',
-                'Écrire du code étape par étape'
+                'Un algorithme de calcul',
+                'Un ensemble de liaisons entre données',
+                'Un type de variable',
+                'Un langage de programmation'
               ],
-              correctAnswer: 2,
-              explanation: 'La programmation fonctionnelle privilégie les fonctions pures qui ne modifient pas l\'état et n\'ont pas d\'effets de bord.',
+              correctAnswer: 1,
+              explanation: 'Une structure de données est un ensemble de liaisons entre données qui se rapportent à différents aspects d\'un même problème.',
               difficulty: 'easy'
             },
             {
               id: 'ex1-1-2',
               type: 'matching',
-              question: 'Associe chaque paradigme à sa caractéristique :',
+              question: 'Associe chaque approche à sa description :',
               pairs: [
-                { left: 'Impératif', right: 'Décrit comment faire' },
-                { left: 'Fonctionnel', right: 'Utilise des fonctions pures' },
-                { left: 'Orienté Objet', right: 'Organise en objets' }
+                { left: 'Point de vue machine', right: 'Du plus élémentaire au plus complexe' },
+                { left: 'Point de vue problème', right: 'De l\'expression naturelle à la structure machine' }
               ],
-              correctAnswer: ['0-0', '1-1', '2-2'],
-              explanation: 'Chaque paradigme a sa propre approche : impératif (comment), fonctionnel (fonctions), objet (objets).',
+              correctAnswer: ['0-0', '1-1'],
+              explanation: 'Le point de vue machine part des bits vers les structures complexes, tandis que le point de vue problème part de l\'expression naturelle.',
               difficulty: 'medium'
+            }
+          ]
+        },
+        {
+          id: 'sec1-2-representation-interne',
+          title: 'Représentation interne : le point de vue de la machine',
+          content: `La mémoire est linéairement calibrée en **bits** (0 et 1). Pour accéder à une donnée, il faut connaître son adresse.
+
+**Unités mémorielles :**
+- **Bit** : unité élémentaire (2 états : 0 ou 1)
+- **Byte/Octet** : 8 bits (256 valeurs possibles)
+- Toutes les unités sont des puissances de 2
+
+**Structures de données rigides :**
+
+Une structure rigide contient deux parties :
+1. **En-tête** (header) : indique comment lire les données (type, taille)
+2. **Données** : le contenu proprement dit
+
+**Trois types de structures rigides :**
+
+1. **Scalaire** : une seule donnée
+   - En-tête : type + taille
+   - Exemple : un nombre entier
+
+2. **Vecteur (tableau)** : suite de composantes de même type
+   - En-tête : type + nombre de composantes + taille de chaque composante
+   - Accès direct par indice
+   - Formule : position = ((indice - 1) * taille) + 1
+
+3. **Agrégat** : composantes de types différents
+   - Structure hétérogène
+   - Permet de regrouper des données liées`,
+          keyPoints: [
+            'Mémoire = séquence linéaire de bits',
+            'Structure = en-tête + données',
+            'Scalaire : une donnée',
+            'Vecteur : accès par indice',
+            'Agrégat : types hétérogènes'
+          ],
+          tip: 'La déclaration réserve l\'espace en mémoire, l\'affectation y écrit les données.',
+          exercises: [
+            {
+              id: 'ex1-2-1',
+              type: 'qcm',
+              question: 'Combien de valeurs différentes peut stocker un byte (8 bits) ?',
+              options: [
+                '8',
+                '16',
+                '128',
+                '256'
+              ],
+              correctAnswer: 3,
+              explanation: 'Un byte de 8 bits peut stocker 2^8 = 256 valeurs différentes (de 0 à 255).',
+              difficulty: 'easy'
             },
             {
-              id: 'ex1-1-3',
+              id: 'ex1-2-2',
               type: 'true-false',
-              question: 'En programmation fonctionnelle, on modifie rarement les variables existantes.',
+              question: 'Dans un vecteur, on peut accéder directement à n\'importe quel élément par son indice.',
               options: ['Vrai', 'Faux'],
               correctAnswer: 0,
-              explanation: 'VRAI ! La programmation fonctionnelle favorise l\'immuabilité : on crée de nouvelles valeurs au lieu de modifier les existantes.',
+              explanation: 'VRAI ! C\'est le principe de l\'accès direct : on calcule la position à partir de l\'indice.',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex1-2-3',
+              type: 'fill-blank',
+              question: 'Une structure de données rigide contient deux parties : _____ et _____',
+              blanks: [
+                { text: 'Première partie : _____', answer: 'en-tête' },
+                { text: 'Deuxième partie : _____', answer: 'données' }
+              ],
+              correctAnswer: ['en-tête', 'données'],
+              explanation: 'L\'en-tête contient les métadonnées (type, taille), et les données contiennent le contenu proprement dit.',
               difficulty: 'easy'
             }
           ]
         },
         {
-          id: 'sec1-2-fonctions-valeurs',
-          title: 'Les fonctions comme valeurs',
-          content: `En programmation fonctionnelle, les **fonctions sont des valeurs de première classe** (first-class citizens).
+          id: 'sec1-3-pointeurs',
+          title: 'Les pointeurs',
+          content: `Les **pointeurs** sont des adresses mémoire qui permettent de créer des structures de données souples.
 
-**Cela signifie qu'on peut :**
+**Concept fondamental :**
+- Un pointeur contient l'adresse d'une autre donnée en mémoire
+- Permet de créer des liaisons dynamiques entre données
+- Base des structures complexes comme les listes et les arbres
 
-1. **Stocker une fonction dans une variable**
-\`\`\`ocaml
-let double = fun x -> x * 2
+**Structures de données souples :**
+
+Contrairement aux structures rigides, les structures souples :
+- Peuvent grandir ou rétrécir dynamiquement
+- Ne nécessitent pas de connaître la taille à l'avance
+- Utilisent des pointeurs pour lier les éléments
+
+**Doublet (cons cell) :**
+- Structure fondamentale en Lisp
+- Contient deux pointeurs : CAR et CDR
+- CAR pointe vers la valeur
+- CDR pointe vers le reste de la structure
+
+**Représentation en mémoire :**
+\`\`\`
+┌─────┬─────┐
+│ CAR │ CDR │
+└──┬──┴──┬──┘
+   │     │
+   ↓     ↓
+ valeur  suite
 \`\`\`
 
-2. **Passer une fonction en argument**
-\`\`\`ocaml
-let appliquer f x = f x
-\`\`\`
-
-3. **Retourner une fonction comme résultat**
-\`\`\`ocaml
-let creer_multiplicateur n = fun x -> x * n
-\`\`\`
-
-4. **Stocker des fonctions dans des structures de données**
-\`\`\`ocaml
-let operations = [fun x -> x + 1; fun x -> x * 2]
-\`\`\``,
+**Liste chaînée :**
+Une liste est une séquence de doublets où chaque CDR pointe vers le doublet suivant.`,
           keyPoints: [
-            'Les fonctions sont des valeurs',
-            'On peut les stocker dans des variables',
-            'On peut les passer en paramètre',
-            'On peut les retourner comme résultat'
+            'Pointeur = adresse mémoire',
+            'Structures souples vs rigides',
+            'Doublet : CAR + CDR',
+            'Base des listes en Lisp',
+            'Croissance dynamique'
           ],
           example: {
-            title: 'Exemple concret',
-            content: 'let fois_deux = fun x -> x * 2 in\nlet resultat = fois_deux 5\n(* resultat vaut 10 *)'
+            title: 'Liste (1 2 3)',
+            content: '┌───┬───┐   ┌───┬───┐   ┌───┬───┐\n│ 1 │ ●─┼──→│ 2 │ ●─┼──→│ 3 │nil│\n└───┴───┘   └───┴───┘   └───┴───┘'
           },
           exercises: [
             {
-              id: 'ex1-2-1',
+              id: 'ex1-3-1',
               type: 'qcm',
-              question: 'Que signifie "les fonctions sont des valeurs de première classe" ?',
+              question: 'Qu\'est-ce qu\'un pointeur ?',
               options: [
-                'Les fonctions sont plus importantes que les variables',
-                'Les fonctions peuvent être utilisées comme n\'importe quelle autre valeur',
-                'Les fonctions doivent toujours être définies en premier',
-                'Les fonctions ne peuvent pas être modifiées'
+                'Une valeur numérique',
+                'Une adresse mémoire',
+                'Une fonction',
+                'Un type de données'
               ],
               correctAnswer: 1,
-              explanation: 'Cela signifie qu\'on peut manipuler les fonctions comme n\'importe quelle valeur : les stocker, les passer en paramètre, etc.',
+              explanation: 'Un pointeur est une adresse mémoire qui permet de localiser une donnée en mémoire.',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex1-3-2',
+              type: 'matching',
+              question: 'Associe chaque élément du doublet à sa fonction :',
+              pairs: [
+                { left: 'CAR', right: 'Pointe vers la valeur' },
+                { left: 'CDR', right: 'Pointe vers le reste' }
+              ],
+              correctAnswer: ['0-0', '1-1'],
+              explanation: 'CAR contient la valeur de l\'élément, CDR pointe vers le reste de la liste.',
               difficulty: 'medium'
             },
             {
-              id: 'ex1-2-2',
-              type: 'fill-blank',
-              question: 'Complète le code :',
-              blanks: [
-                { text: 'let triple = fun x -> x * _____', answer: '3' }
+              id: 'ex1-3-3',
+              type: 'true-false',
+              question: 'Les structures de données souples nécessitent de connaître la taille à l\'avance.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 1,
+              explanation: 'FAUX ! C\'est justement l\'avantage des structures souples : elles peuvent grandir ou rétrécir dynamiquement.',
+              difficulty: 'medium'
+            }
+          ]
+        },
+        {
+          id: 'sec1-4-representation-externe',
+          title: 'Représentation externe : le point de vue du problème',
+          content: `Du point de vue du problème, on part de structures naturelles pour les ramener à des structures implémentables.
+
+**Quatre types de structures :**
+
+**1. Séquences (files, queues)**
+- Ordre d'arrivée des éléments
+- FIFO (First In, First Out) pour les files
+- LIFO (Last In, First Out) pour les piles
+
+**2. Ensembles**
+- Pas d'ordre particulier
+- Pas de doublons
+- Opérations : union, intersection, différence
+
+**3. Arborescences**
+- Structure hiérarchique
+- Un point d'entrée (racine)
+- Pas de circuits (pas de retour à un nœud déjà visité)
+- Exemples : arbre généalogique, système de fichiers
+
+**4. Réseaux (graphes)**
+- Structure la plus générale
+- Plusieurs points d'entrée possibles
+- Peut contenir des circuits
+- Exemples : réseau social, réseau routier
+
+**Ramener à des structures simples :**
+
+Un réseau complexe peut être décomposé en :
+- **Objets** : les nœuds du réseau
+- **Relations statiques** : liens entre objets (attributs)
+- **Relations dynamiques** : comportements (méthodes)
+
+Chaque objet devient une **liste d'associations** (map/dictionnaire).`,
+          keyPoints: [
+            'Quatre structures : séquences, ensembles, arborescences, réseaux',
+            'FIFO vs LIFO',
+            'Arborescence : pas de circuits',
+            'Réseau : le plus général',
+            'Décomposer en objets simples'
+          ],
+          example: {
+            title: 'Objet personne',
+            content: '(Dupont\n  (taille 180)\n  (aime Duchmol)\n  (est-un informaticien))'
+          },
+          exercises: [
+            {
+              id: 'ex1-4-1',
+              type: 'qcm',
+              question: 'Quelle est la différence principale entre une arborescence et un réseau ?',
+              options: [
+                'La taille',
+                'Les arborescences n\'ont pas de circuits',
+                'Les réseaux n\'ont qu\'un point d\'entrée',
+                'Il n\'y a pas de différence'
               ],
-              correctAnswer: ['3'],
-              explanation: 'Pour créer une fonction qui triple, on multiplie x par 3.',
+              correctAnswer: 1,
+              explanation: 'Une arborescence n\'a pas de circuits (on ne peut pas revenir à un nœud déjà visité), contrairement à un réseau.',
+              difficulty: 'medium'
+            },
+            {
+              id: 'ex1-4-2',
+              type: 'matching',
+              question: 'Associe chaque structure à son type d\'accès :',
+              pairs: [
+                { left: 'File (FIFO)', right: 'Premier arrivé, premier servi' },
+                { left: 'Pile (LIFO)', right: 'Dernier arrivé, premier servi' }
+              ],
+              correctAnswer: ['0-0', '1-1'],
+              explanation: 'FIFO = First In First Out, LIFO = Last In First Out.',
               difficulty: 'easy'
+            },
+            {
+              id: 'ex1-4-3',
+              type: 'ordering',
+              question: 'Ordonne ces structures de la plus simple à la plus complexe :',
+              items: [
+                'Séquence',
+                'Arborescence',
+                'Réseau'
+              ],
+              correctAnswer: [0, 1, 2],
+              explanation: 'Séquence (linéaire) < Arborescence (hiérarchique, pas de circuits) < Réseau (circuits possibles).',
+              difficulty: 'medium'
+            }
+          ]
+        },
+        {
+          id: 'sec1-5-listes-associations',
+          title: 'Arborescences et listes d\'associations',
+          content: `Les **arborescences** sont des structures hiérarchiques fondamentales.
+
+**Représentation parenthésée :**
+
+En Lisp, on représente une arborescence avec des parenthèses :
+\`\`\`lisp
+(A (B (E) (F)) (C (G)) (D (H) (I)))
+\`\`\`
+
+Cette notation représente :
+- A est la racine
+- B, C, D sont les enfants de A
+- E, F sont les enfants de B
+- etc.
+
+**Listes d'associations (alist) :**
+
+Une liste d'associations est une arborescence à trois niveaux :
+1. **Racine** : nom de l'objet
+2. **Branches** : clés (attributs ou sélecteurs)
+3. **Feuilles** : valeurs ou méthodes
+
+**Exemple d'objet :**
+\`\`\`lisp
+(Dupont
+  (taille 180)
+  (aime Duchmol)
+  (deteste Truc)
+  (est-un informaticien)
+  (reaction-aux-blagues rigole))
+\`\`\`
+
+**Avantages :**
+- **Accès par nom** (clé) plutôt que par position
+- Structure flexible
+- Facile à modifier
+- Base de la programmation orientée objet
+
+**Conversion réseau → objet → arborescence → liste**
+
+Cette chaîne permet de convertir n'importe quel problème complexe en structures implémentables.`,
+          keyPoints: [
+            'Arborescence : représentation parenthésée',
+            'Liste d\'associations : 3 niveaux',
+            'Accès par clé (nom)',
+            'Conversion des structures complexes',
+            'Base des objets'
+          ],
+          example: {
+            title: 'Liste de propriétés',
+            content: '(voiture\n  (marque "Renault")\n  (couleur "rouge")\n  (annee 2020))'
+          },
+          exercises: [
+            {
+              id: 'ex1-5-1',
+              type: 'qcm',
+              question: 'Combien de niveaux a une liste d\'associations typique ?',
+              options: [
+                '2 niveaux',
+                '3 niveaux',
+                '4 niveaux',
+                'Illimité'
+              ],
+              correctAnswer: 1,
+              explanation: 'Une liste d\'associations a 3 niveaux : racine (nom), branches (clés), feuilles (valeurs).',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex1-5-2',
+              type: 'true-false',
+              question: 'Dans une liste d\'associations, on accède aux valeurs par leur position.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 1,
+              explanation: 'FAUX ! On accède aux valeurs par leur clé (nom), pas par position.',
+              difficulty: 'medium'
+            },
+            {
+              id: 'ex1-5-3',
+              type: 'fill-blank',
+              question: 'Une arborescence peut être convertie en _____',
+              blanks: [
+                { text: 'Une arborescence devient : _____', answer: 'liste d\'associations' }
+              ],
+              correctAnswer: ['liste d\'associations'],
+              explanation: 'Les arborescences peuvent être représentées comme des listes d\'associations pour faciliter l\'implémentation.',
+              difficulty: 'medium'
             }
           ]
         }
       ]
     },
     {
-      id: 'ch2-lambda-calcul',
-      title: 'Lambda-Calcul (λ-calcul)',
-      description: 'Le fondement mathématique de la programmation fonctionnelle',
-      icon: 'λ',
-      color: 'bg-blue-600/20',
+      id: 'ch2-dialogue-processus',
+      title: 'Dialogue, Processus et Structures de Contrôle',
+      description: 'Comprendre le fonctionnement dynamique de la machine',
+      icon: '⚙️',
+      color: 'bg-green-600/20',
       sections: [
         {
-          id: 'sec2-1-introduction-lambda',
-          title: 'Introduction au λ-calcul',
-          content: `Le **λ-calcul** (lambda-calcul) est un système formel inventé par Alonzo Church dans les années 1930.
+          id: 'sec2-1-processus',
+          title: 'Processus, procédures et fonctions',
+          content: `La machine fonctionne comme une **cellule vivante** avec des entrées et des sorties.
 
-**C'est le fondement théorique de la programmation fonctionnelle.**
+**Composants dynamiques :**
 
-### Les trois éléments du λ-calcul :
+**1. Périphériques d'entrée**
+- Clavier, souris, écran tactile
+- Reçoivent les signaux de l'extérieur
 
-**1. Variables**
-- x, y, z, ...
-- Représentent des valeurs inconnues
+**2. Périphériques de sortie**
+- Écran, enceintes
+- Émettent les signaux vers l'extérieur
 
-**2. Abstraction (création de fonction)**
-- λx. E
-- "λx" signifie "fonction qui prend x en paramètre"
-- E est le corps de la fonction
+**3. Mémoire tampon (buffer)**
+- Zone frontière entre l'intérieur et l'extérieur
+- C'est là que s'exécutent les processus
 
-**3. Application (appel de fonction)**
-- (M N)
-- Applique la fonction M à l'argument N`,
+**Processus :**
+
+Un **processus** est une activité qui se déroule dans la machine :
+- Modifie l'état de la mémoire
+- Peut déclencher d'autres processus
+- Peut être simple ou complexe (décomposable)
+
+**Procédure vs Fonction :**
+
+**Procédure** :
+- Séquence d'instructions
+- Peut avoir des effets de bord
+- Ne retourne pas forcément de valeur
+
+**Fonction** :
+- Calcul qui produit une valeur
+- Idéalement sans effets de bord (pure)
+- Retourne toujours une valeur
+
+**Processus élémentaires :**
+- Lecture (read) : recevoir des données
+- Écriture (write) : envoyer des données
+- Calcul : transformer des données`,
           keyPoints: [
-            'Système formel créé par Alonzo Church',
-            '3 éléments : variables, abstraction, application',
-            'λx. E définit une fonction',
-            '(M N) applique M à N'
+            'Machine = cellule vivante',
+            'Processus : activité en mémoire',
+            'Procédure : séquence d\'instructions',
+            'Fonction : calcul → valeur',
+            'Mémoire tampon : zone d\'exécution'
           ],
-          tip: 'Le symbole λ (lambda) vient de la lettre grecque. On prononce "lambda x point E".',
           exercises: [
             {
               id: 'ex2-1-1',
               type: 'qcm',
-              question: 'Que représente λx. x + 1 ?',
+              question: 'Quelle est la différence principale entre une fonction et une procédure ?',
               options: [
-                'Une variable x',
-                'Une fonction qui ajoute 1 à son paramètre',
-                'L\'application d\'une fonction',
-                'Un nombre'
+                'La taille du code',
+                'Une fonction retourne toujours une valeur',
+                'Une procédure est plus rapide',
+                'Il n\'y a pas de différence'
               ],
               correctAnswer: 1,
-              explanation: 'λx. x + 1 est une abstraction qui définit une fonction prenant x et retournant x + 1.',
-              difficulty: 'easy'
+              explanation: 'Une fonction retourne toujours une valeur, tandis qu\'une procédure exécute des actions sans forcément retourner de valeur.',
+              difficulty: 'medium'
             },
             {
               id: 'ex2-1-2',
               type: 'matching',
-              question: 'Associe chaque notation λ-calcul à sa signification :',
+              question: 'Associe chaque composant à sa fonction :',
               pairs: [
-                { left: 'x', right: 'Variable' },
-                { left: 'λx. E', right: 'Abstraction (fonction)' },
-                { left: '(M N)', right: 'Application' }
+                { left: 'Périphérique d\'entrée', right: 'Reçoit les signaux' },
+                { left: 'Périphérique de sortie', right: 'Émet les signaux' },
+                { left: 'Mémoire tampon', right: 'Exécute les processus' }
               ],
               correctAnswer: ['0-0', '1-1', '2-2'],
-              explanation: 'Les trois éléments de base : variables, abstraction pour créer des fonctions, application pour les appeler.',
-              difficulty: 'medium'
+              explanation: 'Chaque composant a un rôle spécifique dans le fonctionnement de la machine.',
+              difficulty: 'easy'
             }
           ]
         },
         {
-          id: 'sec2-2-beta-reduction',
-          title: 'β-réduction (calcul)',
-          content: `La **β-réduction** est la règle de calcul fondamentale du λ-calcul.
+          id: 'sec2-2-structures-controle',
+          title: 'Structures de contrôle fondamentales',
+          content: `Les **structures de contrôle** organisent les relations temporelles entre processus.
 
-**Règle :** (λx. E) N → E[x := N]
+**Trois structures fondamentales :**
 
-Cela signifie : remplacer toutes les occurrences de x dans E par N.
-
-### Exemples :
-
-**Exemple 1 :** Fonction identité
-\`\`\`
-(λx. x) 5
-→ 5
-\`\`\`
-
-**Exemple 2 :** Fonction qui double
-\`\`\`
-(λx. x + x) 3
-→ 3 + 3
-→ 6
+**1. Séquence**
+- Exécution l'une après l'autre
+- Ordre important
+\`\`\`lisp
+(progn
+  (instruction1)
+  (instruction2)
+  (instruction3))
 \`\`\`
 
-**Exemple 3 :** Composition
+**2. Alternative (conditionnelle)**
+- Choix entre plusieurs branches
+- Basé sur une condition
+\`\`\`lisp
+(if condition
+    alors
+    sinon)
 \`\`\`
-(λx. x * 2) ((λy. y + 1) 4)
-→ (λx. x * 2) (4 + 1)
-→ (λx. x * 2) 5
-→ 5 * 2
-→ 10
-\`\`\``,
+
+**3. Itération (boucle)**
+- Répétition d'un processus
+- Tant qu'une condition est vraie
+\`\`\`lisp
+(loop while condition
+  do (corps))
+\`\`\`
+
+**Combinaison des structures :**
+
+Ces trois structures peuvent se combiner pour créer n'importe quel algorithme. C'est le **théorème de structure** de Böhm-Jacopini.
+
+**Récursivité :**
+
+En programmation fonctionnelle, on privilégie la **récursivité** aux boucles :
+- Une fonction s'appelle elle-même
+- Condition d'arrêt (cas de base)
+- Cas récursif qui rapproche de la solution`,
           keyPoints: [
-            'β-réduction : règle de calcul',
-            '(λx. E) N remplace x par N dans E',
-            'On peut réduire étape par étape',
-            'Permet d\'évaluer les expressions'
+            'Trois structures : séquence, alternative, itération',
+            'Séquence : une après l\'autre',
+            'Alternative : si...alors...sinon',
+            'Itération : répétition',
+            'Récursivité > boucles en fonctionnel'
           ],
           example: {
-            title: 'Étapes détaillées',
-            content: '(λx. x + 1) 7\n→ remplacer x par 7 dans "x + 1"\n→ 7 + 1\n→ 8'
+            title: 'If en Lisp',
+            content: '(if (> x 10)\n    "grand"\n    "petit")'
           },
           exercises: [
             {
               id: 'ex2-2-1',
               type: 'qcm',
-              question: 'Que donne (λx. x * 3) 4 après β-réduction ?',
+              question: 'Combien y a-t-il de structures de contrôle fondamentales ?',
               options: [
-                '4',
+                '2',
                 '3',
-                '12',
-                '7'
+                '4',
+                '5'
               ],
-              correctAnswer: 2,
-              explanation: 'On remplace x par 4 : 4 * 3 = 12',
+              correctAnswer: 1,
+              explanation: 'Il y a 3 structures fondamentales : séquence, alternative et itération.',
               difficulty: 'easy'
             },
             {
               id: 'ex2-2-2',
-              type: 'ordering',
-              question: 'Ordonne les étapes de réduction de (λx. x + x) 5 :',
-              items: [
-                '(λx. x + x) 5',
-                'Remplacer x par 5',
-                '5 + 5',
-                '10'
+              type: 'matching',
+              question: 'Associe chaque structure à sa description :',
+              pairs: [
+                { left: 'Séquence', right: 'Exécution l\'une après l\'autre' },
+                { left: 'Alternative', right: 'Choix selon condition' },
+                { left: 'Itération', right: 'Répétition' }
               ],
-              correctAnswer: [0, 1, 2, 3],
-              explanation: 'On part de l\'expression, on remplace x par 5, on obtient 5 + 5, puis on calcule 10.',
+              correctAnswer: ['0-0', '1-1', '2-2'],
+              explanation: 'Chaque structure a un rôle spécifique dans le contrôle du flux d\'exécution.',
               difficulty: 'medium'
+            },
+            {
+              id: 'ex2-2-3',
+              type: 'true-false',
+              question: 'En programmation fonctionnelle, on préfère la récursivité aux boucles.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 0,
+              explanation: 'VRAI ! La récursivité est plus naturelle en programmation fonctionnelle que les boucles impératives.',
+              difficulty: 'medium'
+            }
+          ]
+        },
+        {
+          id: 'sec2-3-piles-queues',
+          title: 'Piles et queues',
+          content: `Les **piles** et **queues** sont des structures de données dynamiques essentielles.
+
+**Pile (Stack) - LIFO**
+
+**Last In, First Out** : le dernier entré est le premier sorti
+
+**Opérations :**
+- **push** : empiler (ajouter au sommet)
+- **pop** : dépiler (retirer du sommet)
+- **peek** : voir le sommet sans retirer
+
+**Analogie** : pile d'assiettes
+
+**Utilisation** :
+- Pile d'appels de fonctions
+- Annuler/Refaire (Undo/Redo)
+- Parcours en profondeur
+
+**Queue (File) - FIFO**
+
+**First In, First Out** : le premier entré est le premier sorti
+
+**Opérations :**
+- **enqueue** : enfiler (ajouter à la fin)
+- **dequeue** : défiler (retirer du début)
+
+**Analogie** : file d'attente
+
+**Utilisation** :
+- Gestion des tâches
+- Buffer de communication
+- Parcours en largeur
+
+**Implémentation en Lisp :**
+
+**Pile :**
+\`\`\`lisp
+; Empiler
+(push element pile)
+
+; Dépiler
+(pop pile)
+\`\`\`
+
+**Queue :**
+On utilise deux pointeurs : tête et queue`,
+          keyPoints: [
+            'Pile : LIFO (dernier entré, premier sorti)',
+            'Queue : FIFO (premier entré, premier sorti)',
+            'Push/Pop pour les piles',
+            'Enqueue/Dequeue pour les queues',
+            'Utilisations différentes'
+          ],
+          example: {
+            title: 'Pile vs Queue',
+            content: 'Pile (1 2 3) → Pop → 3\nQueue (1 2 3) → Dequeue → 1'
+          },
+          exercises: [
+            {
+              id: 'ex2-3-1',
+              type: 'qcm',
+              question: 'Dans une pile, quel élément est retiré en premier ?',
+              options: [
+                'Le premier ajouté',
+                'Le dernier ajouté',
+                'Celui du milieu',
+                'Au hasard'
+              ],
+              correctAnswer: 1,
+              explanation: 'Dans une pile (LIFO), le dernier élément ajouté est le premier retiré.',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex2-3-2',
+              type: 'matching',
+              question: 'Associe chaque structure à son principe :',
+              pairs: [
+                { left: 'Pile', right: 'LIFO' },
+                { left: 'Queue', right: 'FIFO' }
+              ],
+              correctAnswer: ['0-0', '1-1'],
+              explanation: 'Pile = LIFO (Last In First Out), Queue = FIFO (First In First Out).',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex2-3-3',
+              type: 'ordering',
+              question: 'On empile 1, puis 2, puis 3. Dans quel ordre les retire-t-on ?',
+              items: ['3', '2', '1'],
+              correctAnswer: [0, 1, 2],
+              explanation: 'Dans une pile, on retire dans l\'ordre inverse : 3 (dernier), puis 2, puis 1 (premier).',
+              difficulty: 'medium'
+            }
+          ]
+        },
+        {
+          id: 'sec2-4-pile-appels',
+          title: 'Pile des appels',
+          content: `La **pile des appels** (call stack) est fondamentale pour comprendre l'exécution des fonctions.
+
+**Fonctionnement :**
+
+Quand une fonction est appelée :
+1. **Empiler** un contexte d'exécution (stack frame)
+   - Paramètres de la fonction
+   - Variables locales
+   - Adresse de retour
+
+2. **Exécuter** le corps de la fonction
+
+3. **Dépiler** quand la fonction retourne
+   - Reprendre l'exécution à l'adresse de retour
+
+**Exemple d'appels imbriqués :**
+
+\`\`\`lisp
+(defun f (x)
+  (+ x 1))
+
+(defun g (x)
+  (f (* x 2)))
+
+(g 5)
+\`\`\`
+
+**État de la pile :**
+\`\`\`
+┌─────────────┐
+│ f(10)       │ ← Sommet
+├─────────────┤
+│ g(5)        │
+├─────────────┤
+│ toplevel    │
+└─────────────┘
+\`\`\`
+
+**Récursivité et pile :**
+
+Chaque appel récursif ajoute un frame à la pile :
+- Si trop d'appels : **débordement de pile** (stack overflow)
+- Solution : **récursivité terminale** (tail recursion)
+
+**Récursivité terminale :**
+
+L'appel récursif est la dernière opération :
+- Peut être optimisé en boucle
+- Pas de débordement de pile
+- Utilisé avec un accumulateur`,
+          keyPoints: [
+            'Pile d\'appels : gestion des fonctions',
+            'Frame = paramètres + variables + retour',
+            'Empiler à l\'appel, dépiler au retour',
+            'Récursivité → empilement',
+            'Récursivité terminale : optimisation'
+          ],
+          tip: 'En Lisp, la fonction TRACE permet de visualiser les appels et la pile.',
+          exercises: [
+            {
+              id: 'ex2-4-1',
+              type: 'qcm',
+              question: 'Que contient un frame de la pile d\'appels ?',
+              options: [
+                'Seulement le nom de la fonction',
+                'Paramètres, variables locales et adresse de retour',
+                'Seulement le résultat',
+                'Rien du tout'
+              ],
+              correctAnswer: 1,
+              explanation: 'Un frame contient les paramètres, les variables locales et l\'adresse de retour.',
+              difficulty: 'medium'
+            },
+            {
+              id: 'ex2-4-2',
+              type: 'true-false',
+              question: 'La récursivité terminale permet d\'éviter le débordement de pile.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 0,
+              explanation: 'VRAI ! La récursivité terminale peut être optimisée en boucle, évitant l\'empilement.',
+              difficulty: 'medium'
+            },
+            {
+              id: 'ex2-4-3',
+              type: 'fill-blank',
+              question: 'Quand une fonction retourne, on _____ le contexte de la pile',
+              blanks: [
+                { text: 'Action sur la pile : _____', answer: 'dépile' }
+              ],
+              correctAnswer: ['dépile'],
+              explanation: 'On dépile le contexte pour revenir à l\'appelant.',
+              difficulty: 'easy'
             }
           ]
         }
       ]
     },
     {
-      id: 'ch3-bases-ocaml',
-      title: 'Bases d\'OCaml',
-      description: 'Types, expressions et syntaxe fondamentale',
-      icon: '🐫',
-      color: 'bg-orange-600/20',
+      id: 'ch3-intro-lisp',
+      title: 'Introduction à Lisp',
+      description: 'Découvrir le langage Lisp et ses concepts fondamentaux',
+      icon: '🎨',
+      color: 'bg-purple-600/20',
       sections: [
         {
-          id: 'sec3-1-typage',
-          title: 'Système de typage',
-          content: `OCaml utilise un **système de typage statique fort** avec **inférence de types**.
+          id: 'sec3-1-read-eval-print',
+          title: 'Read, Eval, Print : la boucle REPL',
+          content: `Lisp fonctionne avec une boucle **REPL** : Read-Eval-Print Loop
 
-**Typage statique :**
-- Les types sont vérifiés à la compilation
-- Les erreurs de type sont détectées avant l'exécution
-- Plus sûr que le typage dynamique
+**Les trois fonctions fondamentales :**
 
-**Typage fort :**
-- Pas de conversion implicite entre types
-- 1 + 1.5 → ERREUR (int et float incompatibles)
-- Il faut être explicite : 1.0 +. 1.5
+**1. READ**
+- Lit une expression Lisp depuis l'entrée
+- Convertit le texte en structure de données
+- Retourne un pointeur vers l'objet créé
 
-**Inférence de types :**
-- Pas besoin d'annoter partout
-- OCaml devine les types automatiquement
-- \`let x = 5\` → OCaml sait que x : int`,
+**2. EVAL**
+- Évalue l'expression lue
+- Si atome : retourne sa valeur liée
+- Si liste : applique la fonction (car) aux arguments (cdr)
+- Retourne le résultat
+
+**3. PRINT**
+- Affiche le résultat de eval
+- Écrit dans le tampon de sortie
+
+**La boucle REPL :**
+\`\`\`
+┌──────┐
+│ READ │
+└──┬───┘
+   ↓
+┌──────┐
+│ EVAL │
+└──┬───┘
+   ↓
+┌───────┐
+│ PRINT │
+└───┬───┘
+    ↓
+  (loop)
+\`\`\`
+
+**Exemples :**
+\`\`\`lisp
+> (+ 1 2)
+3
+
+> (* 5 6)
+30
+
+> (quote a)
+A
+\`\`\`
+
+**Quote (') :**
+Empêche l'évaluation
+\`\`\`lisp
+> 'a
+A
+
+> '(1 2 3)
+(1 2 3)
+\`\`\``,
           keyPoints: [
-            'Typage statique : vérification à la compilation',
-            'Typage fort : pas de conversion implicite',
-            'Inférence : OCaml devine les types',
-            'Sécurité et fiabilité accrues'
+            'REPL : Read-Eval-Print Loop',
+            'READ : texte → structure',
+            'EVAL : calcule le résultat',
+            'PRINT : affiche',
+            'Quote empêche l\'évaluation'
           ],
-          tip: 'En OCaml, + est pour les entiers et +. pour les flottants. Ne les confonds pas !',
+          example: {
+            title: 'Session REPL',
+            content: '> (+ 1 2)\n3\n> (* 3 4)\n12'
+          },
           exercises: [
             {
               id: 'ex3-1-1',
               type: 'qcm',
-              question: 'Qu\'est-ce que l\'inférence de types ?',
+              question: 'Que signifie REPL ?',
               options: [
-                'Obligation d\'écrire tous les types manuellement',
-                'OCaml devine automatiquement les types',
-                'Les types changent pendant l\'exécution',
-                'On peut mélanger int et float'
+                'Read-Execute-Print-Loop',
+                'Read-Eval-Print-Loop',
+                'Repeat-Eval-Print-Loop',
+                'Read-Eval-Process-Loop'
               ],
               correctAnswer: 1,
-              explanation: 'L\'inférence de types permet à OCaml de déduire automatiquement les types sans qu\'on ait besoin de les écrire explicitement.',
+              explanation: 'REPL signifie Read-Eval-Print Loop : lire, évaluer, afficher, recommencer.',
               difficulty: 'easy'
             },
             {
               id: 'ex3-1-2',
+              type: 'matching',
+              question: 'Associe chaque fonction à son rôle :',
+              pairs: [
+                { left: 'READ', right: 'Convertit texte en structure' },
+                { left: 'EVAL', right: 'Calcule le résultat' },
+                { left: 'PRINT', right: 'Affiche' }
+              ],
+              correctAnswer: ['0-0', '1-1', '2-2'],
+              explanation: 'Chaque fonction a un rôle précis dans la boucle REPL.',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex3-1-3',
               type: 'true-false',
-              question: 'En OCaml, 1 + 1.5 est une expression valide.',
+              question: 'Le symbole quote (\') empêche l\'évaluation d\'une expression.',
               options: ['Vrai', 'Faux'],
-              correctAnswer: 1,
-              explanation: 'FAUX ! OCaml a un typage fort : on ne peut pas mélanger int et float. Il faut utiliser 1.0 +. 1.5',
-              difficulty: 'medium'
+              correctAnswer: 0,
+              explanation: 'VRAI ! Quote retourne l\'expression telle quelle sans l\'évaluer.',
+              difficulty: 'easy'
             }
           ]
         },
         {
-          id: 'sec3-2-types-base',
-          title: 'Types de base',
-          content: `OCaml propose plusieurs **types de base** :
+          id: 'sec3-2-s-expressions',
+          title: 'S-expressions et notation préfixée',
+          content: `Les **S-expressions** (Symbolic Expressions) sont la syntaxe fondamentale de Lisp.
 
-**1. int (entiers)**
-- Nombres entiers : -3, 0, 42, 1000
-- Opérations : +, -, *, /, mod
+**Forme générale :**
+\`\`\`lisp
+(fonction arg1 arg2 ... argN)
+\`\`\`
 
-**2. float (flottants)**
-- Nombres décimaux : 3.14, -0.5, 1.0
-- Opérations : +., -., *., /.
-- Notation obligatoire avec point : 1.0 (pas 1)
+**Notation préfixée :**
 
-**3. bool (booléens)**
-- true ou false
-- Opérations : &&, ||, not
+L'opérateur vient AVANT les opérandes :
+\`\`\`lisp
+; Au lieu de : 1 + 2
+(+ 1 2)
 
-**4. char (caractères)**
-- Un seul caractère entre apostrophes : 'a', 'Z', '5'
+; Au lieu de : 5 * 3
+(* 5 3)
 
-**5. string (chaînes)**
-- Texte entre guillemets : "bonjour", "OCaml"
-- Concaténation : ^
+; Au lieu de : (1 + 2) * 3
+(* (+ 1 2) 3)
+\`\`\`
 
-**6. unit (type vide)**
-- Une seule valeur : ()
-- Utilisé pour les effets de bord`,
+**Avantages :**
+- Pas d'ambiguïté (pas besoin de priorité d'opérateurs)
+- Nombre d'arguments variable
+- Uniformité : tout est une liste
+
+**Types d'expressions :**
+
+**1. Atome**
+- Nombre : 42, 3.14
+- Symbole : x, foo, +
+- Chaîne : "hello"
+- Booléen : t (vrai), nil (faux)
+
+**2. Liste**
+- Suite d'éléments entre parenthèses
+- \`\`\`(1 2 3)\`\`\`
+- \`\`\`(a b (c d))\`\`\` (listes imbriquées)
+
+**Exemples :**
+\`\`\`lisp
+(+ 1 2 3 4 5)           ; 15
+(* 2 (+ 3 4))           ; 14
+(list 'a 'b 'c)         ; (A B C)
+\`\`\``,
           keyPoints: [
-            'int : entiers avec +, -, *, /',
-            'float : décimaux avec +., -., *., /.',
-            'bool : true/false',
-            'char : \'a\', string : "texte"',
-            'unit : () pour effets de bord'
+            'S-expression : syntaxe de base',
+            'Notation préfixée : (op arg1 arg2)',
+            'Atome : nombre, symbole, chaîne',
+            'Liste : (elem1 elem2 ...)',
+            'Tout est une liste'
           ],
-          example: {
-            title: 'Exemples de valeurs',
-            content: 'let age = 20        (* int *)\nlet pi = 3.14       (* float *)\nlet actif = true    (* bool *)\nlet lettre = \'a\'    (* char *)\nlet nom = "Alice"   (* string *)\nlet rien = ()       (* unit *)'
-          },
+          tip: 'En Lisp, le code est une donnée et la donnée est du code !',
           exercises: [
             {
               id: 'ex3-2-1',
-              type: 'matching',
-              question: 'Associe chaque valeur à son type :',
-              pairs: [
-                { left: '42', right: 'int' },
-                { left: '3.14', right: 'float' },
-                { left: 'true', right: 'bool' },
-                { left: '"texte"', right: 'string' }
+              type: 'qcm',
+              question: 'Quelle est la notation correcte pour calculer 3 + 4 en Lisp ?',
+              options: [
+                '3 + 4',
+                '(+ 3 4)',
+                '+ 3 4',
+                '(3 + 4)'
               ],
-              correctAnswer: ['0-0', '1-1', '2-2', '3-3'],
-              explanation: 'Chaque valeur a un type précis : 42 est un int, 3.14 un float, true un bool, "texte" une string.',
+              correctAnswer: 1,
+              explanation: 'En Lisp, on utilise la notation préfixée : (+ 3 4).',
               difficulty: 'easy'
             },
             {
               id: 'ex3-2-2',
-              type: 'qcm',
-              question: 'Quelle est la bonne syntaxe pour additionner deux flottants ?',
-              options: [
-                '3.14 + 2.0',
-                '3.14 +. 2.0',
-                '3.14 plus 2.0',
-                'add(3.14, 2.0)'
+              type: 'fill-blank',
+              question: 'En Lisp, (- 10 3) vaut _____',
+              blanks: [
+                { text: 'Résultat : _____', answer: '7' }
               ],
-              correctAnswer: 1,
-              explanation: 'En OCaml, +. est l\'opérateur d\'addition pour les flottants.',
-              difficulty: 'medium'
+              correctAnswer: ['7'],
+              explanation: '(- 10 3) soustrait 3 de 10, ce qui donne 7.',
+              difficulty: 'easy'
             },
             {
               id: 'ex3-2-3',
-              type: 'fill-blank',
-              question: 'Complète avec le bon opérateur :',
-              blanks: [
-                { text: '"Hello " _____ "World"  (* concaténation *)', answer: '^' }
-              ],
-              correctAnswer: ['^'],
-              explanation: 'L\'opérateur ^ permet de concaténer deux chaînes de caractères.',
-              difficulty: 'easy'
+              type: 'true-false',
+              question: 'En notation préfixée, il n\'y a pas de priorité d\'opérateurs à retenir.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 0,
+              explanation: 'VRAI ! Les parenthèses indiquent explicitement l\'ordre d\'évaluation.',
+              difficulty: 'medium'
             }
           ]
         },
         {
-          id: 'sec3-3-let',
-          title: 'Déclarations let',
-          content: `Le mot-clé **let** permet de donner un nom à une valeur ou une expression.
+          id: 'sec3-3-evaluation',
+          title: 'Mécanisme d\'évaluation',
+          content: `Comprendre comment Lisp **évalue** les expressions est essentiel.
 
-**Syntaxe de base :**
-\`\`\`ocaml
-let nom = expression
+**Règles d'évaluation :**
+
+**1. Atomes**
+- **Nombres** : s'évaluent en eux-mêmes
+  \`\`\`lisp
+  42 → 42
+  3.14 → 3.14
+  \`\`\`
+
+- **Symboles** : cherchent leur valeur liée
+  \`\`\`lisp
+  (setq x 10)
+  x → 10
+  \`\`\`
+
+- **T et NIL** : constantes booléennes
+  \`\`\`lisp
+  t → T (vrai)
+  nil → NIL (faux et liste vide)
+  \`\`\`
+
+**2. Listes**
+- Le **CAR** (premier élément) est la fonction
+- Le **CDR** (reste) contient les arguments
+- Tous les arguments sont évalués (sauf formes spéciales)
+- La fonction est appliquée aux résultats
+
+**Exemple :**
+\`\`\`lisp
+(+ (* 2 3) (- 10 5))
+
+1. Évaluer (* 2 3) → 6
+2. Évaluer (- 10 5) → 5
+3. Évaluer (+ 6 5) → 11
 \`\`\`
 
-**Let local (in) :**
-\`\`\`ocaml
-let x = 5 in
-let y = x + 3 in
-x * y    (* résultat: 40 *)
-\`\`\`
+**Formes spéciales :**
 
-**Portée (scope) :**
-- La variable existe seulement dans son contexte
-- Après le \`in\`, la variable est accessible
+Certaines formes ne suivent pas les règles normales :
+- **QUOTE** : ne pas évaluer
+- **IF** : n'évalue qu'une branche
+- **SETQ** : le premier argument n'est pas évalué
 
-**Immuabilité :**
-- En OCaml, les liaisons sont **immuables**
-- On ne peut pas modifier x après \`let x = 5\`
-- On peut créer une nouvelle liaison avec le même nom (shadowing)`,
+**Auto-évaluation et eval :**
+\`\`\`lisp
+(eval (eval '(+ 1 2)))  ; 3
+\`\`\``,
           keyPoints: [
-            'let nom = expression',
-            'let...in pour portée locale',
-            'Variables immuables',
-            'Shadowing possible'
+            'Nombres : auto-évaluation',
+            'Symboles : cherchent leur valeur',
+            'Listes : appel de fonction',
+            'CAR = fonction, CDR = arguments',
+            'Formes spéciales : exceptions'
           ],
           example: {
-            title: 'Shadowing',
-            content: 'let x = 5 in\nlet x = x + 1 in  (* nouveau x qui vaut 6 *)\nx * 2             (* 12 *)'
+            title: 'Évaluation imbriquée',
+            content: '(* (+ 1 2) (- 5 2))\n→ (* 3 3)\n→ 9'
           },
           exercises: [
             {
               id: 'ex3-3-1',
               type: 'qcm',
-              question: 'Que calcule : let x = 3 in let y = x * 2 in x + y ?',
+              question: 'Que fait (eval \'(+ 1 2)) ?',
               options: [
-                '5',
-                '9',
-                '12',
-                '6'
+                'Retourne la liste (+ 1 2)',
+                'Calcule 1 + 2 et retourne 3',
+                'Provoque une erreur',
+                'Retourne le symbole +'
               ],
               correctAnswer: 1,
-              explanation: 'x = 3, y = 3 * 2 = 6, donc x + y = 3 + 6 = 9',
+              explanation: 'eval évalue l\'expression quotée (+ 1 2), ce qui calcule 3.',
               difficulty: 'medium'
             },
             {
               id: 'ex3-3-2',
+              type: 'matching',
+              question: 'Associe chaque type à son évaluation :',
+              pairs: [
+                { left: 'Nombre', right: 'Auto-évaluation' },
+                { left: 'Symbole', right: 'Cherche sa valeur' },
+                { left: 'Liste', right: 'Appel de fonction' }
+              ],
+              correctAnswer: ['0-0', '1-1', '2-2'],
+              explanation: 'Chaque type d\'expression a son propre mécanisme d\'évaluation.',
+              difficulty: 'medium'
+            },
+            {
+              id: 'ex3-3-3',
               type: 'true-false',
-              question: 'En OCaml, on peut modifier la valeur d\'une variable après sa déclaration.',
+              question: 'Dans une liste, tous les arguments sont toujours évalués avant l\'appel.',
               options: ['Vrai', 'Faux'],
               correctAnswer: 1,
-              explanation: 'FAUX ! Les liaisons sont immuables. On peut créer une nouvelle liaison avec le même nom (shadowing), mais pas modifier l\'ancienne.',
-              difficulty: 'easy'
+              explanation: 'FAUX ! Les formes spéciales (if, quote, setq...) ont des règles d\'évaluation différentes.',
+              difficulty: 'medium'
             }
           ]
         },
         {
-          id: 'sec3-4-fonctions',
-          title: 'Fonctions et curryfication',
-          content: `En OCaml, les fonctions se définissent avec **let** et **fun**.
+          id: 'sec3-4-liaison-variables',
+          title: 'Liaison de variables : SET et SETQ',
+          content: `En Lisp, on **lie** (bind) un nom à une valeur.
 
-**Syntaxe 1 : avec fun**
-\`\`\`ocaml
-let double = fun x -> x * 2
+**SET : liaison avec évaluation**
+
+Avec SET, les deux arguments sont évalués :
+\`\`\`lisp
+(set 'x 10)      ; Lie X à 10
+x                ; → 10
+
+(set 'y 'x)      ; Lie Y au symbole X
+y                ; → X
+(eval y)         ; → 10
 \`\`\`
 
-**Syntaxe 2 : forme abrégée (équivalente)**
-\`\`\`ocaml
-let double x = x * 2
+**Attention** : il faut quoter le nom !
+
+**SETQ : quote automatique**
+
+SETQ (SET with Quote) ne quote que le premier argument :
+\`\`\`lisp
+(setq x 10)      ; Équivalent à (set 'x 10)
+x                ; → 10
+
+(setq y (+ 5 3)) ; Le deuxième argument est évalué
+y                ; → 8
 \`\`\`
 
-**Fonction à plusieurs paramètres :**
-\`\`\`ocaml
-let add x y = x + y
-(* équivalent à : let add = fun x -> fun y -> x + y *)
+**SETQ est plus pratique dans 99% des cas.**
+
+**Liaisons multiples :**
+\`\`\`lisp
+(setq a 1
+      b 2
+      c 3)
 \`\`\`
 
-**Curryfication :**
-- Une fonction à n paramètres est une fonction qui prend 1 paramètre et retourne une fonction
-- \`add 3 5\` est en fait \`(add 3) 5\`
-- On peut faire de **l'application partielle** :
+**Exemples avancés :**
+\`\`\`lisp
+(setq x 'foo)
+(setq foo 'bar)
+(eval x)         ; → BAR
 
-\`\`\`ocaml
-let add3 = add 3  (* fonction qui ajoute 3 *)
-let result = add3 5  (* 8 *)
-\`\`\``,
+(setq liste '(1 2 3))
+(car liste)      ; → 1
+\`\`\`
+
+**Portée des variables :**
+- **Globales** : définies avec setq au toplevel
+- **Locales** : définies avec let dans une fonction`,
           keyPoints: [
-            'let f x = ... (syntaxe courte)',
-            'fun x -> ... (fonction anonyme)',
-            'Curryfication automatique',
-            'Application partielle possible'
+            'SET : évalue les deux arguments',
+            'SETQ : quote le premier automatiquement',
+            'Préférer SETQ en pratique',
+            'Liaison = nom → valeur',
+            'Portée : globale vs locale'
           ],
-          example: {
-            title: 'Application partielle',
-            content: 'let multiplier x y = x * y\nlet doubler = multiplier 2\nlet resultat = doubler 7  (* 14 *)'
-          },
+          tip: 'SETQ = SET + Quote automatique sur le nom',
           exercises: [
             {
               id: 'ex3-4-1',
               type: 'qcm',
-              question: 'Qu\'est-ce que la curryfication ?',
+              question: 'Quelle est la différence entre SET et SETQ ?',
               options: [
-                'Transformer une fonction en curry',
-                'Une fonction multi-paramètres devient des fonctions à 1 paramètre',
-                'Appeler plusieurs fois la même fonction',
-                'Créer des fonctions anonymes'
+                'Il n\'y en a pas',
+                'SETQ quote automatiquement le premier argument',
+                'SET est plus rapide',
+                'SETQ ne peut lier qu\'un seul nom'
               ],
               correctAnswer: 1,
-              explanation: 'La curryfication transforme une fonction f(x,y) en une fonction f(x) qui retourne une fonction g(y).',
+              explanation: 'SETQ quote automatiquement le premier argument (le nom de la variable).',
               difficulty: 'medium'
             },
             {
               id: 'ex3-4-2',
               type: 'fill-blank',
-              question: 'Complète la définition :',
+              question: 'Après (setq x 5), la valeur de x est _____',
               blanks: [
-                { text: 'let triple x = x _____ 3', answer: '*' }
+                { text: 'Valeur : _____', answer: '5' }
               ],
-              correctAnswer: ['*'],
-              explanation: 'Pour tripler un nombre, on le multiplie par 3.',
+              correctAnswer: ['5'],
+              explanation: 'SETQ lie le symbole X à la valeur 5.',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex3-4-3',
+              type: 'true-false',
+              question: 'Avec SETQ, il faut quoter le nom de la variable.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 1,
+              explanation: 'FAUX ! SETQ quote automatiquement le premier argument.',
               difficulty: 'easy'
             }
           ]
         },
         {
-          id: 'sec3-5-pattern-matching',
-          title: 'Pattern Matching (filtrage par motif)',
-          content: `Le **pattern matching** permet d'analyser la structure d'une valeur et d'exécuter du code selon sa forme.
+          id: 'sec3-5-listes-lisp',
+          title: 'Manipulation de listes',
+          content: `Les **listes** sont la structure de données fondamentale de Lisp.
 
-**Syntaxe avec match :**
-\`\`\`ocaml
-match expression with
-| motif1 -> resultat1
-| motif2 -> resultat2
-| _ -> resultat_par_defaut
+**Construction de listes :**
+
+**CONS** : ajoute un élément en tête
+\`\`\`lisp
+(cons 1 '(2 3))     ; → (1 2 3)
+(cons 'a 'b)        ; → (A . B)  (paire pointée)
 \`\`\`
 
-**Exemple : fonction avec entiers**
-\`\`\`ocaml
-let signe x =
-  match x with
-  | 0 -> "zéro"
-  | n when n > 0 -> "positif"
-  | _ -> "négatif"
+**LIST** : crée une liste
+\`\`\`lisp
+(list 1 2 3)        ; → (1 2 3)
+(list 'a (+ 1 2))   ; → (A 3)
 \`\`\`
 
-**Exhaustivité :**
-- Le compilateur vérifie que tous les cas sont couverts
-- \`_\` (underscore) attrape tous les cas restants
+**Accès aux éléments :**
 
-**Gardes (when) :**
-- Ajoutent des conditions supplémentaires
-- \`| n when n > 0 -> ...\``,
+**CAR** : premier élément
+\`\`\`lisp
+(car '(a b c))      ; → A
+\`\`\`
+
+**CDR** : reste de la liste
+\`\`\`lisp
+(cdr '(a b c))      ; → (B C)
+\`\`\`
+
+**Combinaisons :**
+\`\`\`lisp
+(cadr '(a b c))     ; = (car (cdr ...)) → B
+(caddr '(a b c))    ; = (car (cdr (cdr ...))) → C
+\`\`\`
+
+**NIL : liste vide**
+\`\`\`lisp
+'()                 ; → NIL
+nil                 ; → NIL
+(car nil)           ; → NIL
+(cdr nil)           ; → NIL
+\`\`\`
+
+**Tests sur les listes :**
+\`\`\`lisp
+(null '())          ; → T
+(listp '(a b))      ; → T
+(atom 'a)           ; → T
+\`\`\``,
           keyPoints: [
-            'match...with pour analyser',
-            '| motif -> résultat',
-            '_ attrape tout',
-            'Exhaustivité vérifiée par OCaml'
+            'CONS : ajoute en tête',
+            'LIST : crée une liste',
+            'CAR : premier élément',
+            'CDR : reste',
+            'NIL : liste vide et faux'
           ],
           example: {
-            title: 'Pattern matching sur bool',
-            content: 'let opposé b =\n  match b with\n  | true -> false\n  | false -> true'
+            title: 'Construction progressive',
+            content: '(cons 1 (cons 2 (cons 3 nil)))\n→ (1 2 3)'
           },
           exercises: [
             {
               id: 'ex3-5-1',
               type: 'qcm',
-              question: 'À quoi sert _ dans un pattern matching ?',
+              question: 'Que retourne (car \'(1 2 3)) ?',
               options: [
-                'À ignorer une valeur',
-                'À attraper tous les cas non traités',
-                'À créer une variable',
-                'À commenter le code'
+                '1',
+                '(1)',
+                '(2 3)',
+                '3'
               ],
-              correctAnswer: 1,
-              explanation: '_ (underscore) est le motif universel qui attrape tous les cas qui n\'ont pas été traités avant.',
+              correctAnswer: 0,
+              explanation: 'CAR retourne le premier élément de la liste, soit 1.',
               difficulty: 'easy'
             },
             {
               id: 'ex3-5-2',
-              type: 'true-false',
-              question: 'OCaml vérifie que tous les cas possibles sont couverts dans un match.',
-              options: ['Vrai', 'Faux'],
-              correctAnswer: 0,
-              explanation: 'VRAI ! C\'est l\'exhaustivité. OCaml émet un warning si des cas ne sont pas couverts.',
-              difficulty: 'medium'
-            }
-          ]
-        },
-        {
-          id: 'sec3-6-tuples',
-          title: 'Tuples (types produits)',
-          content: `Un **tuple** regroupe plusieurs valeurs de types potentiellement différents.
-
-**Syntaxe :**
-\`\`\`ocaml
-let paire = (3, "hello")        (* int * string *)
-let triplet = (1, true, 'a')    (* int * bool * char *)
-\`\`\`
-
-**Accès aux éléments avec pattern matching :**
-\`\`\`ocaml
-let (x, y) = paire  (* x = 3, y = "hello" *)
-
-let premier (x, _, _) = x
-let deuxieme (_, y, _) = y
-\`\`\`
-
-**Fonctions fst et snd (paires) :**
-\`\`\`ocaml
-fst (3, 5)  (* 3 *)
-snd (3, 5)  (* 5 *)
-\`\`\`
-
-**Type produit :**
-- Le type est le produit cartésien : int * string
-- Nombre de combinaisons = taille1 × taille2`,
-          keyPoints: [
-            '(v1, v2, ...) crée un tuple',
-            'Type : t1 * t2 * ...',
-            'Accès par pattern matching',
-            'fst/snd pour les paires'
-          ],
-          exercises: [
-            {
-              id: 'ex3-6-1',
-              type: 'qcm',
-              question: 'Quel est le type de (5, true, "a") ?',
-              options: [
-                'int * bool * char',
-                'int * bool * string',
-                '(int, bool, string)',
-                'tuple'
-              ],
-              correctAnswer: 1,
-              explanation: 'Le tuple contient un int, un bool et une string, donc son type est int * bool * string.',
-              difficulty: 'medium'
-            },
-            {
-              id: 'ex3-6-2',
               type: 'fill-blank',
-              question: 'Complète pour extraire le deuxième élément :',
+              question: 'Que retourne (cdr \'(a b c)) ?',
               blanks: [
-                { text: 'let (_, x, _____) = (1, 2, 3)', answer: '_' }
+                { text: 'Résultat : _____', answer: '(b c)' }
               ],
-              correctAnswer: ['_'],
-              explanation: 'On utilise _ pour ignorer les éléments qu\'on ne veut pas extraire.',
+              correctAnswer: ['(b c)'],
+              explanation: 'CDR retourne le reste de la liste sans le premier élément.',
               difficulty: 'easy'
-            }
-          ]
-        },
-        {
-          id: 'sec3-7-records',
-          title: 'Enregistrements (records)',
-          content: `Les **enregistrements** sont des structures avec des champs nommés.
-
-**Déclaration du type :**
-\`\`\`ocaml
-type point = {
-  x: float;
-  y: float
-}
-\`\`\`
-
-**Création :**
-\`\`\`ocaml
-let p = { x = 3.0; y = 4.5 }
-\`\`\`
-
-**Accès aux champs :**
-\`\`\`ocaml
-p.x  (* 3.0 *)
-p.y  (* 4.5 *)
-\`\`\`
-
-**Pattern matching :**
-\`\`\`ocaml
-let distance_origine {x; y} =
-  sqrt (x *. x +. y *. y)
-\`\`\`
-
-**Copie avec modification :**
-\`\`\`ocaml
-let p2 = { p with y = 10.0 }
-(* p2 = {x = 3.0; y = 10.0} *)
-\`\`\``,
-          keyPoints: [
-            'type nom = {champ: type; ...}',
-            '{champ = valeur; ...} pour créer',
-            'record.champ pour accéder',
-            '{r with champ = nouvelle} pour copier'
-          ],
-          example: {
-            title: 'Personne',
-            content: 'type personne = {\n  nom: string;\n  age: int\n}\n\nlet alice = {nom = "Alice"; age = 25}'
-          },
-          exercises: [
-            {
-              id: 'ex3-7-1',
-              type: 'qcm',
-              question: 'Comment accède-t-on au champ nom d\'un record p ?',
-              options: [
-                'p[nom]',
-                'p->nom',
-                'p.nom',
-                'nom(p)'
-              ],
-              correctAnswer: 2,
-              explanation: 'On utilise la notation pointée : record.champ',
-              difficulty: 'easy'
-            }
-          ]
-        },
-        {
-          id: 'sec3-8-variants',
-          title: 'Types sommes (variants)',
-          content: `Les **types sommes** (ou variants) représentent un choix parmi plusieurs possibilités.
-
-**Déclaration :**
-\`\`\`ocaml
-type couleur = Rouge | Vert | Bleu
-
-type forme =
-  | Cercle of float
-  | Rectangle of float * float
-\`\`\`
-
-**Constructeurs :**
-- Rouge, Vert, Bleu sont des constructeurs constants
-- Cercle, Rectangle sont des constructeurs avec données
-
-**Pattern matching obligatoire :**
-\`\`\`ocaml
-let aire forme =
-  match forme with
-  | Cercle r -> 3.14 *. r *. r
-  | Rectangle (l, h) -> l *. h
-\`\`\`
-
-**Type somme :**
-- Appelé "somme" car le nombre de valeurs est la somme des possibilités`,
-          keyPoints: [
-            'type t = C1 | C2 | ...',
-            'Constructeurs avec/sans données',
-            'Pattern matching pour analyser',
-            'Exhaustivité vérifiée'
-          ],
-          example: {
-            title: 'Option',
-            content: 'type \'a option =\n  | None\n  | Some of \'a\n\nlet trouve x = Some 42\nlet pas_trouve = None'
-          },
-          exercises: [
-            {
-              id: 'ex3-8-1',
-              type: 'qcm',
-              question: 'Que représente un type somme ?',
-              options: [
-                'L\'addition de nombres',
-                'Un choix parmi plusieurs possibilités',
-                'La somme de tous les champs',
-                'Un calcul mathématique'
-              ],
-              correctAnswer: 1,
-              explanation: 'Un type somme représente un choix (OU) : une valeur peut être Rouge OU Vert OU Bleu.',
-              difficulty: 'medium'
             },
             {
-              id: 'ex3-8-2',
+              id: 'ex3-5-3',
               type: 'matching',
-              question: 'Associe chaque concept :',
+              question: 'Associe chaque fonction à son résultat pour \'(1 2 3) :',
               pairs: [
-                { left: 'Type produit', right: 'Tuple/Record (ET)' },
-                { left: 'Type somme', right: 'Variant (OU)' },
-                { left: 'Pattern matching', right: 'Analyse de structure' }
+                { left: 'car', right: '1' },
+                { left: 'cdr', right: '(2 3)' },
+                { left: 'cadr', right: '2' }
               ],
               correctAnswer: ['0-0', '1-1', '2-2'],
-              explanation: 'Produit = ET (toutes les valeurs), Somme = OU (un choix), Pattern matching = analyser.',
-              difficulty: 'hard'
+              explanation: 'CAR donne 1, CDR donne (2 3), CADR = (car (cdr ...)) donne 2.',
+              difficulty: 'medium'
             }
           ]
         }
       ]
     },
     {
-      id: 'ch4-recursivite',
-      title: 'Récursivité',
-      description: 'Maîtrisez les fonctions récursives et leur optimisation',
-      icon: '🔄',
-      color: 'bg-green-600/20',
+      id: 'ch4-creer-fonctions',
+      title: 'Créer des Fonctions',
+      description: 'Définir et utiliser des fonctions en Lisp',
+      icon: '🔧',
+      color: 'bg-orange-600/20',
       sections: [
         {
-          id: 'sec4-1-recursivite-simple',
-          title: 'Récursivité simple',
-          content: `Une fonction **récursive** est une fonction qui s'appelle elle-même.
+          id: 'sec4-1-defun',
+          title: 'Définir des fonctions avec DEFUN',
+          content: `**DEFUN** permet de définir des fonctions en Lisp.
 
-**Mot-clé rec :**
-En OCaml, il faut utiliser \`let rec\` pour définir une fonction récursive.
-
-**Structure d'une fonction récursive :**
-1. **Cas de base** : condition d'arrêt
-2. **Cas récursif** : appel à soi-même avec un problème plus petit
-
-**Exemple : factorielle**
-\`\`\`ocaml
-let rec fact n =
-  if n = 0 then 1              (* cas de base *)
-  else n * fact (n - 1)        (* cas récursif *)
-
-(* fact 5 = 5 * fact 4 = 5 * 4 * 3 * 2 * 1 = 120 *)
+**Syntaxe :**
+\`\`\`lisp
+(defun nom-fonction (paramètres)
+  corps)
 \`\`\`
 
-**Exemple : somme des n premiers entiers**
-\`\`\`ocaml
-let rec somme n =
-  if n = 0 then 0
-  else n + somme (n - 1)
+**Exemple simple :**
+\`\`\`lisp
+(defun carre (x)
+  (* x x))
+
+(carre 5)  ; → 25
+\`\`\`
+
+**Fonction avec plusieurs paramètres :**
+\`\`\`lisp
+(defun somme (a b)
+  (+ a b))
+
+(somme 3 4)  ; → 7
+\`\`\`
+
+**Fonction sans paramètre :**
+\`\`\`lisp
+(defun dire-bonjour ()
+  "Bonjour !")
+
+(dire-bonjour)  ; → "Bonjour !"
+\`\`\`
+
+**Valeur de retour :**
+
+La dernière expression évaluée est retournée :
+\`\`\`lisp
+(defun moyenne (a b)
+  (/ (+ a b) 2))
+
+(moyenne 10 20)  ; → 15
+\`\`\`
+
+**Fonctions locales avec LABELS :**
+\`\`\`lisp
+(labels ((helper (x) (* x 2)))
+  (helper 5))  ; → 10
+\`\`\`
+
+**Documentation :**
+\`\`\`lisp
+(defun aire-carre (cote)
+  "Calcule l'aire d'un carré"
+  (* cote cote))
 \`\`\``,
           keyPoints: [
-            'let rec pour fonction récursive',
-            'Cas de base (arrêt)',
-            'Cas récursif (problème plus petit)',
-            'Toujours vérifier la terminaison'
+            'DEFUN : définir une fonction',
+            'Paramètres entre parenthèses',
+            'Dernière expression = retour',
+            'Documentation possible',
+            'LABELS : fonctions locales'
           ],
-          tip: 'Sans cas de base, la fonction tourne à l\'infini ! Toujours penser à la condition d\'arrêt.',
+          example: {
+            title: 'Fonction double',
+            content: '(defun double (x)\n  (* x 2))\n\n(double 7)  ; → 14'
+          },
           exercises: [
             {
               id: 'ex4-1-1',
               type: 'qcm',
-              question: 'Pourquoi faut-il un cas de base dans une fonction récursive ?',
+              question: 'Comment définit-on une fonction en Lisp ?',
               options: [
-                'Pour rendre le code plus lisible',
-                'Pour arrêter la récursion et éviter l\'infini',
-                'Pour optimiser la vitesse',
-                'Ce n\'est pas obligatoire'
+                'function nom()',
+                '(defun nom ())',
+                'def nom():',
+                'function nom {}'
               ],
               correctAnswer: 1,
-              explanation: 'Le cas de base est la condition d\'arrêt. Sans lui, la fonction s\'appellerait infiniment !',
+              explanation: 'On utilise DEFUN avec la syntaxe (defun nom (params) corps).',
               difficulty: 'easy'
             },
             {
               id: 'ex4-1-2',
-              type: 'ordering',
-              question: 'Ordonne les appels de fact 3 :',
-              items: [
-                'fact 3',
-                '3 * fact 2',
-                '3 * 2 * fact 1',
-                '3 * 2 * 1 * fact 0',
-                '3 * 2 * 1 * 1 = 6'
+              type: 'fill-blank',
+              question: 'Complète la fonction qui triple un nombre : (defun triple (x) (_____  x  3))',
+              blanks: [
+                { text: 'Opérateur : _____', answer: '*' }
               ],
-              correctAnswer: [0, 1, 2, 3, 4],
-              explanation: 'La récursion descend jusqu\'au cas de base (0), puis remonte en calculant.',
+              correctAnswer: ['*'],
+              explanation: 'Pour tripler, on multiplie par 3 : (* x 3).',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex4-1-3',
+              type: 'true-false',
+              question: 'En Lisp, la dernière expression évaluée dans une fonction est automatiquement retournée.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 0,
+              explanation: 'VRAI ! Pas besoin de mot-clé return, la dernière valeur est retournée.',
               difficulty: 'medium'
             }
           ]
         },
         {
-          id: 'sec4-2-recursivite-terminale',
-          title: 'Récursivité terminale',
-          content: `Une fonction est **récursive terminale** si l'appel récursif est la dernière opération.
+          id: 'sec4-2-recursivite',
+          title: 'Récursivité',
+          content: `La **récursivité** est au cœur de la programmation fonctionnelle.
 
-**Avantage :**
-- Optimisée par le compilateur
-- Pas de dépassement de pile (stack overflow)
-- Transformée en boucle par OCaml
+**Principe :**
 
-**Factorielle NON terminale :**
-\`\`\`ocaml
-let rec fact n =
-  if n = 0 then 1
-  else n * fact (n - 1)  (* multiplication après l'appel *)
+Une fonction récursive s'appelle elle-même jusqu'à atteindre un **cas de base**.
+
+**Anatomie d'une fonction récursive :**
+
+1. **Cas de base** : condition d'arrêt
+2. **Cas récursif** : appel à soi-même avec un argument plus simple
+
+**Exemple : factorielle**
+\`\`\`lisp
+(defun factorielle (n)
+  (if (<= n 1)
+      1                        ; Cas de base
+      (* n (factorielle (- n 1)))))  ; Cas récursif
+
+(factorielle 5)  ; → 120
 \`\`\`
 
-**Factorielle terminale (avec accumulateur) :**
-\`\`\`ocaml
-let fact_term n =
-  let rec aux n acc =
-    if n = 0 then acc
-    else aux (n - 1) (n * acc)  (* appel récursif en dernière position *)
-  in aux n 1
+**Trace de l'exécution :**
+\`\`\`
+(factorielle 5)
+→ (* 5 (factorielle 4))
+→ (* 5 (* 4 (factorielle 3)))
+→ (* 5 (* 4 (* 3 (factorielle 2))))
+→ (* 5 (* 4 (* 3 (* 2 (factorielle 1)))))
+→ (* 5 (* 4 (* 3 (* 2 1))))
+→ 120
 \`\`\`
 
-**L'accumulateur :**
-- Stocke le résultat partiel
-- Permet d'éviter les calculs après l'appel récursif`,
+**Exemple : longueur de liste**
+\`\`\`lisp
+(defun longueur (liste)
+  (if (null liste)
+      0                           ; Cas de base
+      (+ 1 (longueur (cdr liste)))))  ; Cas récursif
+
+(longueur '(a b c))  ; → 3
+\`\`\`
+
+**Récursivité vs itération :**
+
+Lisp privilégie la récursivité car :
+- Plus déclarative
+- Plus naturelle pour les listes
+- Plus facile à raisonner`,
           keyPoints: [
-            'Appel récursif = dernière opération',
-            'Optimisée par le compilateur',
-            'Utilise un accumulateur',
-            'Pas de stack overflow'
+            'Fonction qui s\'appelle elle-même',
+            'Cas de base : condition d\'arrêt',
+            'Cas récursif : simplification',
+            'Trace pour comprendre',
+            'Récursivité > boucles'
           ],
-          example: {
-            title: 'Somme terminale',
-            content: 'let somme_term n =\n  let rec aux n acc =\n    if n = 0 then acc\n    else aux (n-1) (acc+n)\n  in aux n 0'
-          },
+          tip: 'Utilisez la fonction TRACE pour visualiser les appels récursifs.',
           exercises: [
             {
               id: 'ex4-2-1',
               type: 'qcm',
-              question: 'Qu\'est-ce qu\'un accumulateur ?',
+              question: 'Qu\'est-ce qu\'un cas de base dans une fonction récursive ?',
               options: [
-                'Une variable qui compte les appels',
-                'Un paramètre qui stocke le résultat partiel',
-                'Une fonction auxiliaire',
-                'Un type de donnée'
+                'Le premier appel',
+                'La condition d\'arrêt',
+                'L\'appel récursif',
+                'Le résultat final'
               ],
               correctAnswer: 1,
-              explanation: 'L\'accumulateur est un paramètre supplémentaire qui accumule le résultat au fur et à mesure.',
+              explanation: 'Le cas de base est la condition d\'arrêt qui empêche la récursion infinie.',
               difficulty: 'medium'
             },
             {
               id: 'ex4-2-2',
               type: 'true-false',
-              question: 'Une fonction récursive terminale peut traiter de très grandes valeurs sans stack overflow.',
+              question: 'Une fonction récursive doit toujours avoir un cas de base.',
               options: ['Vrai', 'Faux'],
               correctAnswer: 0,
-              explanation: 'VRAI ! Le compilateur transforme la récursion terminale en boucle, évitant ainsi le stack overflow.',
+              explanation: 'VRAI ! Sans cas de base, la récursion serait infinie.',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex4-2-3',
+              type: 'fill-blank',
+              question: 'La factorielle de 0 est _____',
+              blanks: [
+                { text: 'Résultat : _____', answer: '1' }
+              ],
+              correctAnswer: ['1'],
+              explanation: 'Par définition, 0! = 1 (cas de base de la factorielle).',
+              difficulty: 'easy'
+            }
+          ]
+        },
+        {
+          id: 'sec4-3-recursivite-terminale',
+          title: 'Récursivité terminale et accumulateurs',
+          content: `La **récursivité terminale** est une optimisation importante.
+
+**Problème de la récursivité simple :**
+- Chaque appel empile un contexte
+- Risque de débordement de pile (stack overflow)
+
+**Solution : récursivité terminale**
+
+L'appel récursif est la **dernière opération** :
+- Pas besoin d'empiler
+- Peut être optimisé en boucle
+- Pas de limite de profondeur
+
+**Technique de l'accumulateur :**
+
+On passe le résultat partiel en paramètre.
+
+**Exemple : factorielle terminale**
+\`\`\`lisp
+(defun fact-term (n acc)
+  (if (<= n 1)
+      acc
+      (fact-term (- n 1) (* n acc))))
+
+(defun factorielle (n)
+  (fact-term n 1))
+
+(factorielle 5)  ; → 120
+\`\`\`
+
+**Comparaison :**
+
+**Non terminale :**
+\`\`\`lisp
+(* 5 (fact 4))  ; Il faut garder le *
+(* 5 (* 4 (fact 3)))
+→ empile des opérations
+\`\`\`
+
+**Terminale :**
+\`\`\`lisp
+(fact-term 5 1)
+(fact-term 4 5)
+(fact-term 3 20)
+(fact-term 2 60)
+(fact-term 1 120)
+→ 120
+→ pas d'empilement
+\`\`\`
+
+**Somme de liste terminale :**
+\`\`\`lisp
+(defun somme-aux (liste acc)
+  (if (null liste)
+      acc
+      (somme-aux (cdr liste)
+                 (+ (car liste) acc))))
+
+(defun somme (liste)
+  (somme-aux liste 0))
+\`\`\``,
+          keyPoints: [
+            'Appel récursif = dernière opération',
+            'Accumulateur : résultat partiel',
+            'Optimisable en boucle',
+            'Pas de débordement de pile',
+            'Fonction auxiliaire avec acc'
+          ],
+          tip: 'L\'accumulateur accumule le résultat au fur et à mesure.',
+          exercises: [
+            {
+              id: 'ex4-3-1',
+              type: 'qcm',
+              question: 'Qu\'est-ce qu\'un accumulateur ?',
+              options: [
+                'Une variable globale',
+                'Un paramètre qui accumule le résultat partiel',
+                'Une fonction spéciale',
+                'Un type de données'
+              ],
+              correctAnswer: 1,
+              explanation: 'L\'accumulateur est un paramètre qui accumule le résultat au fur et à mesure des appels.',
+              difficulty: 'medium'
+            },
+            {
+              id: 'ex4-3-2',
+              type: 'true-false',
+              question: 'La récursivité terminale peut être optimisée en boucle.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 0,
+              explanation: 'VRAI ! Le compilateur peut transformer la récursion terminale en boucle.',
+              difficulty: 'medium'
+            },
+            {
+              id: 'ex4-3-3',
+              type: 'matching',
+              question: 'Associe chaque type à sa caractéristique :',
+              pairs: [
+                { left: 'Récursivité simple', right: 'Empile des opérations' },
+                { left: 'Récursivité terminale', right: 'Dernière opération' }
+              ],
+              correctAnswer: ['0-0', '1-1'],
+              explanation: 'La récursivité simple empile, la terminale peut être optimisée.',
               difficulty: 'medium'
             }
           ]
         },
         {
-          id: 'sec4-3-recursivite-mutuelle',
-          title: 'Récursivité mutuelle',
-          content: `Deux fonctions sont **mutuellement récursives** si elles s'appellent l'une l'autre.
+          id: 'sec4-4-fonctions-listes',
+          title: 'Fonctions classiques sur les listes',
+          content: `Lisp propose des fonctions puissantes pour manipuler les listes.
 
-**Syntaxe avec and :**
-\`\`\`ocaml
-let rec pair n =
-  if n = 0 then true
-  else impair (n - 1)
-
-and impair n =
-  if n = 0 then false
-  else pair (n - 1)
+**APPEND : concaténer des listes**
+\`\`\`lisp
+(append '(1 2) '(3 4))     ; → (1 2 3 4)
+(append '(a) '(b) '(c))    ; → (A B C)
 \`\`\`
 
-**Utilisation typique :**
-- Automates à états
-- Parseurs
-- Problèmes avec états alternants
+**REVERSE : inverser une liste**
+\`\`\`lisp
+(reverse '(1 2 3))         ; → (3 2 1)
+\`\`\`
 
-**Exemple : évaluation d'expressions**
-\`\`\`ocaml
-let rec eval_expr e = ...
-  and eval_term t = ...
-  and eval_factor f = ...
+**LENGTH : longueur**
+\`\`\`lisp
+(length '(a b c d))        ; → 4
+\`\`\`
+
+**NTH : nième élément (base 0)**
+\`\`\`lisp
+(nth 0 '(a b c))           ; → A
+(nth 2 '(a b c))           ; → C
+\`\`\`
+
+**MEMBER : chercher un élément**
+\`\`\`lisp
+(member 'b '(a b c))       ; → (B C)
+(member 'x '(a b c))       ; → NIL
+\`\`\`
+
+**REMOVE : enlever un élément**
+\`\`\`lisp
+(remove 'b '(a b c b))     ; → (A C)
+\`\`\`
+
+**SUBST : substituer**
+\`\`\`lisp
+(subst 'x 'b '(a b c b))   ; → (A X C X)
+\`\`\`
+
+**Implémenter APPEND récursivement :**
+\`\`\`lisp
+(defun mon-append (l1 l2)
+  (if (null l1)
+      l2
+      (cons (car l1)
+            (mon-append (cdr l1) l2))))
 \`\`\``,
           keyPoints: [
-            'let rec ... and ... for mutual recursion',
-            'Fonctions s\'appellent mutuellement',
-            'Utile pour états alternants',
-            'Déclarations liées par and'
+            'APPEND : concaténer',
+            'REVERSE : inverser',
+            'NTH : accès par indice',
+            'MEMBER : recherche',
+            'REMOVE : suppression'
           ],
+          example: {
+            title: 'Combinaisons',
+            content: '(reverse (append \'(1 2) \'(3 4)))\n→ (4 3 2 1)'
+          },
           exercises: [
             {
-              id: 'ex4-3-1',
+              id: 'ex4-4-1',
               type: 'qcm',
-              question: 'Comment déclare-t-on deux fonctions mutuellement récursives ?',
+              question: 'Que retourne (append \'(a b) \'(c d)) ?',
               options: [
-                'Deux let rec séparés',
-                'let rec f ... and g ...',
-                'let mutual f g ...',
-                'let f rec g ...'
+                '(a b c d)',
+                '((a b) (c d))',
+                '(a (b c) d)',
+                '(a c b d)'
               ],
-              correctAnswer: 1,
-              explanation: 'On utilise let rec ... and ... pour lier les déclarations mutuellement récursives.',
-              difficulty: 'medium'
+              correctAnswer: 0,
+              explanation: 'APPEND concatène les listes : (a b c d).',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex4-4-2',
+              type: 'fill-blank',
+              question: 'Que retourne (reverse \'(1 2 3)) ?',
+              blanks: [
+                { text: 'Résultat : _____', answer: '(3 2 1)' }
+              ],
+              correctAnswer: ['(3 2 1)'],
+              explanation: 'REVERSE inverse l\'ordre des éléments.',
+              difficulty: 'easy'
+            },
+            {
+              id: 'ex4-4-3',
+              type: 'true-false',
+              question: 'NTH utilise l\'indexation base 0 (le premier élément est à l\'indice 0).',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 0,
+              explanation: 'VRAI ! (nth 0 liste) retourne le premier élément.',
+              difficulty: 'easy'
             }
           ]
         }
       ]
     },
     {
-      id: 'ch5-listes',
-      title: 'Listes',
-      description: 'Structure de données fondamentale en programmation fonctionnelle',
-      icon: '📋',
-      color: 'bg-cyan-600/20',
+      id: 'ch5-maitriser-environnement',
+      title: 'Maîtriser son Environnement',
+      description: 'Techniques avancées de manipulation et programmation',
+      icon: '⚡',
+      color: 'bg-red-600/20',
       sections: [
         {
-          id: 'sec5-1-construction-listes',
-          title: 'Construction et syntaxe des listes',
-          content: `Une **liste** est une séquence ordonnée d'éléments du même type.
+          id: 'sec5-1-chirurgie-pointeurs',
+          title: 'Chirurgie : au plus près des pointeurs',
+          content: `La **chirurgie** consiste à modifier directement les structures de données en mémoire.
 
-**Syntaxe :**
-\`\`\`ocaml
-[]                    (* liste vide *)
-[1; 2; 3]            (* liste d'entiers *)
-["a"; "b"; "c"]      (* liste de strings *)
+**Fonctions destructives :**
+
+Contrairement aux fonctions pures qui créent de nouvelles structures, les fonctions destructives modifient les structures existantes.
+
+**RPLACA** : remplace le CAR
+\`\`\`lisp
+(setq liste '(a b c))
+(rplaca liste 'x)  ; Modifie le CAR
+liste              ; → (X B C)
 \`\`\`
 
-**Constructeur :: (cons) :**
-- Ajoute un élément en tête de liste
-- x :: liste
-
-\`\`\`ocaml
-1 :: [2; 3]          (* [1; 2; 3] *)
-"a" :: []            (* ["a"] *)
+**RPLACD** : remplace le CDR
+\`\`\`lisp
+(setq liste '(a b c))
+(rplacd liste '(y z))
+liste              ; → (A Y Z)
 \`\`\`
 
-**Opérateur @ (concaténation) :**
-\`\`\`ocaml
-[1; 2] @ [3; 4]      (* [1; 2; 3; 4] *)
+**Avantages :**
+- Plus efficace (pas de copie)
+- Économise la mémoire
+- Opérations en place
+
+**Dangers :**
+- Effets de bord
+- Structure partagée peut causer des bugs
+- Difficile à déboguer
+
+**Exemple de partage :**
+\`\`\`lisp
+(setq l1 '(a b c))
+(setq l2 l1)        ; Partage la même structure
+(rplaca l1 'x)
+l2                  ; → (X B C) aussi modifié !
 \`\`\`
 
-**Type :**
-- 'a list : liste d'éléments de type 'a
-- int list, string list, bool list, etc.`,
+**Quand utiliser :**
+- Performance critique
+- Structures non partagées
+- Algorithmes en place (tri, etc.)`,
           keyPoints: [
-            '[] = liste vide',
-            ':: ajoute en tête (cons)',
-            '@ concatène deux listes',
-            'Tous les éléments du même type'
+            'Chirurgie : modification destructive',
+            'RPLACA : remplace CAR',
+            'RPLACD : remplace CDR',
+            'Attention au partage de structure',
+            'Efficace mais dangereux'
           ],
-          tip: 'Attention : :: ajoute UN élément, @ concatène DEUX listes !',
+          tip: 'Préférez les fonctions non-destructives sauf si la performance est critique.',
           exercises: [
             {
               id: 'ex5-1-1',
               type: 'qcm',
-              question: 'Que donne 5 :: [10; 15] ?',
+              question: 'Que fait RPLACA ?',
               options: [
-                '[5; 10; 15]',
-                '[10; 15; 5]',
-                '[[5]; 10; 15]',
-                'Erreur'
+                'Remplace le CDR',
+                'Remplace le CAR',
+                'Ajoute un élément',
+                'Copie la liste'
               ],
-              correctAnswer: 0,
-              explanation: ':: ajoute l\'élément 5 en tête de la liste [10; 15], donnant [5; 10; 15].',
-              difficulty: 'easy'
+              correctAnswer: 1,
+              explanation: 'RPLACA remplace le CAR (premier élément) d\'une liste de manière destructive.',
+              difficulty: 'medium'
             },
             {
               id: 'ex5-1-2',
-              type: 'qcm',
-              question: 'Quelle est la différence entre :: et @ ?',
-              options: [
-                'Aucune différence',
-                ':: ajoute un élément, @ concatène deux listes',
-                '@ ajoute un élément, :: concatène deux listes',
-                ':: est plus rapide'
-              ],
+              type: 'true-false',
+              question: 'Les fonctions destructives créent de nouvelles structures en mémoire.',
+              options: ['Vrai', 'Faux'],
               correctAnswer: 1,
-              explanation: ':: ajoute UN élément en tête, @ concatène DEUX listes.',
+              explanation: 'FAUX ! Elles modifient les structures existantes, ce qui est plus efficace mais plus dangereux.',
               difficulty: 'medium'
             }
           ]
         },
         {
-          id: 'sec5-2-pattern-matching-listes',
-          title: 'Pattern matching sur les listes',
-          content: `Le pattern matching est essentiel pour travailler avec les listes.
+          id: 'sec5-2-fonctions-ordre-superieur',
+          title: 'Fonctions d\'ordre supérieur',
+          content: `Les **fonctions d'ordre supérieur** sont des fonctions qui manipulent d'autres fonctions.
 
-**Motifs de base :**
-\`\`\`ocaml
-match liste with
-| [] -> ...                  (* liste vide *)
-| [x] -> ...                 (* un seul élément *)
-| x :: xs -> ...             (* tête x et reste xs *)
-| x :: y :: reste -> ...     (* au moins 2 éléments *)
+**MAPCAR** : applique une fonction à chaque élément
+\`\`\`lisp
+(mapcar #'(lambda (x) (* x 2)) '(1 2 3))
+; → (2 4 6)
+
+(defun carre (x) (* x x))
+(mapcar #'carre '(1 2 3 4))
+; → (1 4 9 16)
 \`\`\`
 
-**Exemple : longueur d'une liste**
-\`\`\`ocaml
-let rec longueur liste =
-  match liste with
-  | [] -> 0
-  | _ :: reste -> 1 + longueur reste
+**APPLY** : applique une fonction à une liste d'arguments
+\`\`\`lisp
+(apply #'+ '(1 2 3 4))    ; → 10
+(apply #'max '(5 2 9 1))  ; → 9
 \`\`\`
 
-**Exemple : somme des éléments**
-\`\`\`ocaml
-let rec somme liste =
-  match liste with
-  | [] -> 0
-  | x :: xs -> x + somme xs
+**FUNCALL** : appelle une fonction
+\`\`\`lisp
+(funcall #'+ 1 2 3)       ; → 6
+(funcall #'car '(a b c))  ; → A
 \`\`\`
 
-**Convention :**
-- x, y, z : éléments
-- xs, ys, zs : listes (pluriel)`,
+**REDUCE** : réduit une liste avec une fonction
+\`\`\`lisp
+(reduce #'+ '(1 2 3 4))   ; → 10
+(reduce #'* '(2 3 4))     ; → 24
+\`\`\`
+
+**FILTER (REMOVE-IF-NOT)** : filtre une liste
+\`\`\`lisp
+(remove-if-not #'evenp '(1 2 3 4 5 6))
+; → (2 4 6)
+
+(remove-if-not #'(lambda (x) (> x 5)) '(3 8 2 9 4))
+; → (8 9)
+\`\`\`
+
+**Composition de fonctions :**
+\`\`\`lisp
+(defun compose (f g)
+  #'(lambda (x) (funcall f (funcall g x))))
+
+(funcall (compose #'1+ #'(lambda (x) (* x 2))) 5)
+; → 11  (d'abord *2 → 10, puis +1 → 11)
+\`\`\``,
           keyPoints: [
-            '[] pour liste vide',
-            'x :: xs pour tête et reste',
-            'Récursion naturelle sur listes',
-            'Cas de base = liste vide'
+            'Fonctions qui manipulent des fonctions',
+            'MAPCAR : applique à chaque élément',
+            'APPLY : applique à une liste',
+            'REDUCE : réduit une liste',
+            'Composition de fonctions'
           ],
           example: {
-            title: 'Premier élément',
-            content: 'let premier liste =\n  match liste with\n  | [] -> failwith "vide"\n  | x :: _ -> x'
+            title: 'Double de tous',
+            content: '(mapcar #\'(lambda (x) (* x 2)) \'(1 2 3))\n→ (2 4 6)'
           },
           exercises: [
             {
               id: 'ex5-2-1',
               type: 'qcm',
-              question: 'Dans x :: xs, que représente xs ?',
+              question: 'Que fait (mapcar #\'1+ \'(1 2 3)) ?',
               options: [
-                'Le dernier élément',
-                'La liste sans le premier élément',
-                'La liste complète',
-                'Le deuxième élément'
+                '(1 2 3)',
+                '(2 3 4)',
+                '(3 6 9)',
+                '6'
               ],
               correctAnswer: 1,
-              explanation: 'xs représente le reste de la liste (tous les éléments sauf le premier x).',
-              difficulty: 'easy'
+              explanation: 'MAPCAR applique 1+ (ajoute 1) à chaque élément : (2 3 4).',
+              difficulty: 'medium'
             },
             {
               id: 'ex5-2-2',
               type: 'fill-blank',
-              question: 'Complète pour compter les éléments :',
+              question: 'Que retourne (apply #\'+ \'(1 2 3)) ?',
               blanks: [
-                { text: 'let rec compte = function | [] -> _____ | _ :: reste -> 1 + compte reste', answer: '0' }
+                { text: 'Résultat : _____', answer: '6' }
               ],
-              correctAnswer: ['0'],
-              explanation: 'Une liste vide a 0 éléments.',
-              difficulty: 'medium'
+              correctAnswer: ['6'],
+              explanation: 'APPLY applique + à la liste, ce qui fait 1 + 2 + 3 = 6.',
+              difficulty: 'easy'
             }
           ]
         },
         {
-          id: 'sec5-3-fonctions-listes',
-          title: 'Fonctions classiques sur les listes',
-          content: `OCaml fournit de nombreuses fonctions pour manipuler les listes.
+          id: 'sec5-3-macro-fonctions',
+          title: 'Macro-fonctions',
+          content: `Les **macros** permettent d'étendre la syntaxe de Lisp.
 
-**List.length :**
-\`\`\`ocaml
-List.length [1; 2; 3]  (* 3 *)
+**Différence macro vs fonction :**
+
+**Fonction** :
+- Arguments évalués AVANT l'appel
+- Retourne une valeur
+
+**Macro** :
+- Arguments NON évalués (code brut)
+- Retourne du CODE qui sera évalué
+
+**DEFMACRO** : définir une macro
+\`\`\`lisp
+(defmacro when (condition &rest body)
+  \`(if ,condition
+       (progn ,@body)))
+
+(when (> x 5)
+  (print "grand")
+  (print "très grand"))
 \`\`\`
 
-**List.hd et List.tl :**
-\`\`\`ocaml
-List.hd [1; 2; 3]      (* 1 : tête *)
-List.tl [1; 2; 3]      (* [2; 3] : queue *)
+**Backquote (\`) et virgule (,) :**
+
+- **\`** (backquote) : quote partiel
+- **,** (virgule) : évalue dans un backquote
+- **,@** (virgule-arobase) : épissage de liste
+
+**Exemple :**
+\`\`\`lisp
+(setq x 5)
+\`(a b ,x c)      ; → (A B 5 C)
+\`(a b ,@'(1 2))  ; → (A B 1 2)
 \`\`\`
 
-**List.nth :**
-\`\`\`ocaml
-List.nth [10; 20; 30] 0   (* 10 *)
-List.nth [10; 20; 30] 2   (* 30 *)
+**Macro UNLESS :**
+\`\`\`lisp
+(defmacro unless (condition &rest body)
+  \`(if (not ,condition)
+       (progn ,@body)))
+
+(unless (< x 0)
+  (print "positif"))
 \`\`\`
 
-**List.rev :**
-\`\`\`ocaml
-List.rev [1; 2; 3]     (* [3; 2; 1] *)
-\`\`\`
-
-**List.mem :**
-\`\`\`ocaml
-List.mem 2 [1; 2; 3]   (* true *)
-List.mem 5 [1; 2; 3]   (* false *)
-\`\`\``,
+**Pourquoi les macros ?**
+- Créer de nouvelles structures de contrôle
+- Éviter l'évaluation prématurée
+- Générer du code optimisé
+- Abstraction syntaxique`,
           keyPoints: [
-            'List.length : taille',
-            'List.hd/List.tl : tête/queue',
-            'List.nth : élément à l\'index',
-            'List.rev : inverser'
+            'Macro : transformation de code',
+            'Arguments non évalués',
+            'Retourne du code à évaluer',
+            'Backquote et virgule',
+            'Étendre le langage'
           ],
+          tip: 'Utilisez MACROEXPAND pour voir ce que génère une macro.',
           exercises: [
             {
               id: 'ex5-3-1',
               type: 'qcm',
-              question: 'Que retourne List.hd [5; 10; 15] ?',
+              question: 'Quelle est la principale différence entre une macro et une fonction ?',
               options: [
-                '5',
-                '10',
-                '[5]',
-                '[10; 15]'
+                'Les macros sont plus rapides',
+                'Les macros ne peuvent pas avoir de paramètres',
+                'Les arguments des macros ne sont pas évalués avant l\'expansion',
+                'Il n\'y a pas de différence'
               ],
-              correctAnswer: 0,
-              explanation: 'List.hd retourne la tête (premier élément) de la liste, donc 5.',
-              difficulty: 'easy'
+              correctAnswer: 2,
+              explanation: 'Les macros reçoivent leurs arguments non évalués et génèrent du code.',
+              difficulty: 'hard'
             },
             {
               id: 'ex5-3-2',
-              type: 'matching',
-              question: 'Associe chaque fonction à son résultat sur [1;2;3] :',
-              pairs: [
-                { left: 'List.length', right: '3' },
-                { left: 'List.hd', right: '1' },
-                { left: 'List.tl', right: '[2;3]' },
-                { left: 'List.rev', right: '[3;2;1]' }
-              ],
-              correctAnswer: ['0-0', '1-1', '2-2', '3-3'],
-              explanation: 'Length compte (3), hd donne la tête (1), tl donne la queue ([2;3]), rev inverse ([3;2;1]).',
+              type: 'true-false',
+              question: 'Les macros permettent d\'étendre la syntaxe de Lisp.',
+              options: ['Vrai', 'Faux'],
+              correctAnswer: 0,
+              explanation: 'VRAI ! Les macros permettent de créer de nouvelles structures de contrôle et d\'étendre le langage.',
               difficulty: 'medium'
             }
           ]
@@ -1222,877 +1986,362 @@ List.mem 5 [1; 2; 3]   (* false *)
       ]
     },
     {
-      id: 'ch6-fonctions-ordre-superieur',
-      title: 'Fonctions d\'Ordre Supérieur',
-      description: 'Map, filter, fold et composition de fonctions',
-      icon: '🎭',
+      id: 'ch6-se-perfectionner',
+      title: 'Se Perfectionner',
+      description: 'Concepts avancés et techniques professionnelles',
+      icon: '🎓',
       color: 'bg-indigo-600/20',
       sections: [
         {
-          id: 'sec6-1-map',
-          title: 'Map : transformer chaque élément',
-          content: `**List.map** applique une fonction à chaque élément d'une liste.
+          id: 'sec6-1-lambda',
+          title: 'Lambda : fonctions anonymes',
+          content: `Les **fonctions lambda** sont des fonctions sans nom.
 
-**Signature :**
-\`\`\`ocaml
-List.map : ('a -> 'b) -> 'a list -> 'b list
+**Syntaxe :**
+\`\`\`lisp
+(lambda (paramètres) corps)
 \`\`\`
 
-**Utilisation :**
-\`\`\`ocaml
-List.map (fun x -> x * 2) [1; 2; 3]
-(* [2; 4; 6] *)
-
-List.map String.uppercase_ascii ["a"; "b"]
-(* ["A"; "B"] *)
+**Utilisation directe :**
+\`\`\`lisp
+((lambda (x) (* x 2)) 5)  ; → 10
 \`\`\`
 
-**Implémentation :**
-\`\`\`ocaml
-let rec map f liste =
-  match liste with
-  | [] -> []
-  | x :: xs -> f x :: map f xs
+**Avec des fonctions d'ordre supérieur :**
+\`\`\`lisp
+(mapcar #'(lambda (x) (* x x)) '(1 2 3 4))
+; → (1 4 9 16)
+
+(remove-if-not #'(lambda (x) (> x 5)) '(3 8 2 9))
+; → (8 9)
 \`\`\`
 
-**Quand utiliser map ?**
-- Transformer tous les éléments de la même façon
-- Conversion de type (int -> string)
-- Application d'une fonction partout`,
+**Stocker dans une variable :**
+\`\`\`lisp
+(setq double #'(lambda (x) (* x 2)))
+(funcall double 7)  ; → 14
+\`\`\`
+
+**Fermetures (closures) :**
+
+Une lambda peut capturer les variables de son environnement :
+\`\`\`lisp
+(defun make-adder (n)
+  #'(lambda (x) (+ x n)))
+
+(setq add5 (make-adder 5))
+(funcall add5 10)  ; → 15
+(funcall add5 3)   ; → 8
+\`\`\`
+
+**Quand utiliser :**
+- Fonctions one-shot (usage unique)
+- Callbacks
+- Fonctions d'ordre supérieur
+- Fermetures`,
           keyPoints: [
-            'Applique une fonction à chaque élément',
-            'Préserve la structure',
-            'Même longueur en sortie',
-            'f : \'a -> \'b'
+            'Lambda : fonction anonyme',
+            '#\'(lambda ...) : syntaxe',
+            'Usage avec MAPCAR, etc.',
+            'Fermetures : capture de variables',
+            'Utile pour fonctions one-shot'
           ],
+          example: {
+            title: 'Triple avec lambda',
+            content: '(mapcar #\'(lambda (x) (* x 3)) \'(1 2 3))\n→ (3 6 9)'
+          },
           exercises: [
             {
               id: 'ex6-1-1',
               type: 'qcm',
-              question: 'Que donne List.map (fun x -> x + 1) [5; 10; 15] ?',
+              question: 'Qu\'est-ce qu\'une fonction lambda ?',
               options: [
-                '[6; 11; 16]',
-                '[5; 10; 15]',
-                '[15; 10; 5]',
-                '31'
+                'Une fonction qui utilise des listes',
+                'Une fonction sans nom',
+                'Une fonction récursive',
+                'Une macro'
               ],
-              correctAnswer: 0,
-              explanation: 'Map ajoute 1 à chaque élément : 5+1=6, 10+1=11, 15+1=16.',
+              correctAnswer: 1,
+              explanation: 'Une fonction lambda est une fonction anonyme (sans nom).',
               difficulty: 'easy'
             },
             {
               id: 'ex6-1-2',
               type: 'fill-blank',
-              question: 'Complète pour doubler chaque élément :',
+              question: 'Que retourne ((lambda (x) (+ x 3)) 7) ?',
               blanks: [
-                { text: 'List.map (fun x -> x _____ 2) [1; 2; 3]', answer: '*' }
+                { text: 'Résultat : _____', answer: '10' }
               ],
-              correctAnswer: ['*'],
-              explanation: 'Pour doubler, on multiplie par 2.',
+              correctAnswer: ['10'],
+              explanation: 'La lambda ajoute 3 à son argument : 7 + 3 = 10.',
               difficulty: 'easy'
             }
           ]
         },
         {
-          id: 'sec6-2-filter',
-          title: 'Filter : sélectionner des éléments',
-          content: `**List.filter** garde uniquement les éléments qui satisfont un prédicat.
+          id: 'sec6-2-listes-associations-avancees',
+          title: 'Listes d\'associations avancées',
+          content: `Les **listes d'associations** (alists) sont un moyen puissant d'organiser des données.
 
-**Signature :**
-\`\`\`ocaml
-List.filter : ('a -> bool) -> 'a list -> 'a list
+**Structure :**
+\`\`\`lisp
+((clé1 . valeur1)
+ (clé2 . valeur2)
+ (clé3 . valeur3))
 \`\`\`
 
-**Utilisation :**
-\`\`\`ocaml
-List.filter (fun x -> x > 5) [1; 8; 3; 10; 2]
-(* [8; 10] *)
+**ASSOC** : chercher par clé
+\`\`\`lisp
+(setq contacts
+  '((nom . "Dupont")
+    (age . 30)
+    (ville . "Paris")))
 
-List.filter (fun x -> x mod 2 = 0) [1; 2; 3; 4; 5]
-(* [2; 4] *)
+(assoc 'nom contacts)    ; → (NOM . "Dupont")
+(cdr (assoc 'age contacts))  ; → 30
 \`\`\`
 
-**Implémentation :**
-\`\`\`ocaml
-let rec filter p liste =
-  match liste with
-  | [] -> []
-  | x :: xs ->
-      if p x then x :: filter p xs
-      else filter p xs
+**ACONS** : ajouter une association
+\`\`\`lisp
+(acons 'email "dupont@mail.fr" contacts)
+; → ((EMAIL . "dupont@mail.fr")
+;     (NOM . "Dupont")
+;     (AGE . 30)
+;     (VILLE . "Paris"))
 \`\`\`
 
-**Quand utiliser filter ?**
-- Sélectionner selon un critère
-- Retirer certains éléments
-- Chercher les éléments valides`,
+**Modification :**
+\`\`\`lisp
+(setq contacts
+  (acons 'age 31
+    (remove (assoc 'age contacts) contacts)))
+\`\`\`
+
+**Tables de hachage alternatives :**
+
+Alists simples mais moins performantes pour grandes données.
+Pour performances : utiliser hash-tables.
+
+**Exemple complet :**
+\`\`\`lisp
+(defun get-property (obj key)
+  (cdr (assoc key obj)))
+
+(defun set-property (obj key value)
+  (acons key value
+    (remove (assoc key obj) obj)))
+
+(setq person '((name . "Alice") (age . 25)))
+(get-property person 'name)  ; → "Alice"
+\`\`\``,
           keyPoints: [
-            'Garde les éléments qui satisfont le prédicat',
-            'Prédicat : \'a -> bool',
-            'Liste potentiellement plus courte',
-            'Ordre préservé'
+            'Alist : liste de paires (clé . valeur)',
+            'ASSOC : recherche par clé',
+            'ACONS : ajouter une association',
+            'Simples mais moins performantes',
+            'Alternative : hash-tables'
           ],
+          example: {
+            title: 'Alist personne',
+            content: '((nom . "Martin")\n (age . 28)\n (ville . "Lyon"))'
+          },
           exercises: [
             {
               id: 'ex6-2-1',
               type: 'qcm',
-              question: 'Que fait List.filter (fun x -> x < 10) [5; 15; 8; 20; 3] ?',
+              question: 'Que fait (assoc \'x alist) ?',
               options: [
-                'Garde les éléments < 10',
-                'Garde les éléments > 10',
-                'Multiplie par 10',
-                'Compte les éléments'
+                'Ajoute x à alist',
+                'Supprime x de alist',
+                'Cherche la paire avec la clé x',
+                'Trie alist'
               ],
-              correctAnswer: 0,
-              explanation: 'Filter garde les éléments pour lesquels le prédicat est vrai, donc ceux < 10 : [5; 8; 3].',
-              difficulty: 'easy'
+              correctAnswer: 2,
+              explanation: 'ASSOC cherche et retourne la paire (clé . valeur) correspondant à la clé.',
+              difficulty: 'medium'
             },
             {
               id: 'ex6-2-2',
               type: 'true-false',
-              question: 'List.filter peut rallonger une liste.',
+              question: 'Une alist est une liste de paires (clé . valeur).',
               options: ['Vrai', 'Faux'],
-              correctAnswer: 1,
-              explanation: 'FAUX ! Filter ne peut que garder ou retirer des éléments, jamais en ajouter.',
-              difficulty: 'medium'
+              correctAnswer: 0,
+              explanation: 'VRAI ! Chaque élément est une paire pointée (clé . valeur).',
+              difficulty: 'easy'
             }
           ]
         },
         {
-          id: 'sec6-3-fold',
-          title: 'Fold : réduire une liste',
-          content: `**Fold** accumule les éléments d'une liste en un seul résultat.
+          id: 'sec6-3-listes-proprietes',
+          title: 'Listes de propriétés',
+          content: `Les **listes de propriétés** (plists) sont une alternative aux alists.
 
-**List.fold_left :**
-- Parcourt de gauche à droite
-- Accumule le résultat
-
-\`\`\`ocaml
-List.fold_left : ('a -> 'b -> 'a) -> 'a -> 'b list -> 'a
-
-List.fold_left (+) 0 [1; 2; 3; 4]
-(* ((((0 + 1) + 2) + 3) + 4) = 10 *)
+**Structure :**
+\`\`\`lisp
+(clé1 valeur1 clé2 valeur2 clé3 valeur3)
 \`\`\`
 
-**List.fold_right :**
-- Parcourt de droite à gauche
+**GETF** : obtenir une valeur
+\`\`\`lisp
+(setq person '(:nom "Martin" :age 28 :ville "Lyon"))
 
-\`\`\`ocaml
-List.fold_right (+) [1; 2; 3; 4] 0
-(* (1 + (2 + (3 + (4 + 0)))) = 10 *)
+(getf person :nom)   ; → "Martin"
+(getf person :age)   ; → 28
 \`\`\`
 
-**Exemples d'utilisation :**
-\`\`\`ocaml
-(* Somme *)
-List.fold_left (+) 0 [1; 2; 3]  (* 6 *)
+**SETF avec GETF** : modifier
+\`\`\`lisp
+(setf (getf person :age) 29)
+person  ; → (:NOM "Martin" :AGE 29 :VILLE "Lyon")
+\`\`\`
 
-(* Produit *)
-List.fold_left ( * ) 1 [2; 3; 4]  (* 24 *)
+**REMF** : supprimer une propriété
+\`\`\`lisp
+(remf person :ville)
+person  ; → (:NOM "Martin" :AGE 29)
+\`\`\`
 
-(* Concaténation *)
-List.fold_left (^) "" ["a"; "b"; "c"]  (* "abc" *)
-\`\`\``,
+**Symboles et propriétés :**
+
+En Common Lisp, chaque symbole a une plist :
+\`\`\`lisp
+(setf (get 'alice 'age) 25)
+(setf (get 'alice 'job) "Engineer")
+(get 'alice 'age)  ; → 25
+\`\`\`
+
+**Plist vs Alist :**
+
+**Plist** :
+- Plus compacte (pas de cons cells)
+- Syntaxe plus simple
+- Utilise souvent des keywords (:key)
+
+**Alist** :
+- Plus flexible
+- Supporte toute clé
+- Tradition Lisp classique`,
           keyPoints: [
-            'Réduit une liste en une valeur',
-            'fold_left : gauche à droite',
-            'fold_right : droite à gauche',
-            'Accumulateur initial nécessaire'
+            'Plist : clé valeur clé valeur...',
+            'GETF : obtenir valeur',
+            'SETF + GETF : modifier',
+            'REMF : supprimer',
+            'Alternative à alist'
           ],
           example: {
-            title: 'Maximum d\'une liste',
-            content: 'let max_liste liste =\n  match liste with\n  | [] -> failwith "vide"\n  | x :: xs -> List.fold_left max x xs'
+            title: 'Plist voiture',
+            content: '(:marque "Peugeot"\n :annee 2020\n :couleur "bleu")'
           },
           exercises: [
             {
               id: 'ex6-3-1',
               type: 'qcm',
-              question: 'Que fait List.fold_left (+) 0 liste ?',
+              question: 'Quelle est la différence principale entre plist et alist ?',
               options: [
-                'Compte les éléments',
-                'Calcule la somme',
-                'Double chaque élément',
-                'Inverse la liste'
+                'Aucune différence',
+                'Plist : clé val clé val, Alist : ((clé . val) ...)',
+                'Plist est plus lente',
+                'Alist ne peut pas être modifiée'
               ],
               correctAnswer: 1,
-              explanation: 'Fold_left avec + et 0 comme accumulateur calcule la somme de tous les éléments.',
-              difficulty: 'easy'
+              explanation: 'Plist alterne clés et valeurs, alist utilise des paires pointées.',
+              difficulty: 'medium'
             },
             {
               id: 'ex6-3-2',
-              type: 'ordering',
-              question: 'Ordonne les étapes de fold_left (+) 0 [1;2;3] :',
-              items: [
-                'acc = 0',
-                'acc = 0 + 1 = 1',
-                'acc = 1 + 2 = 3',
-                'acc = 3 + 3 = 6',
-                'résultat = 6'
+              type: 'fill-blank',
+              question: 'Que retourne (getf \'(:a 1 :b 2) :b) ?',
+              blanks: [
+                { text: 'Résultat : _____', answer: '2' }
               ],
-              correctAnswer: [0, 1, 2, 3, 4],
-              explanation: 'Fold_left accumule de gauche à droite : 0 → 1 → 3 → 6',
-              difficulty: 'medium'
+              correctAnswer: ['2'],
+              explanation: 'GETF retourne la valeur associée à la clé :b, soit 2.',
+              difficulty: 'easy'
             }
           ]
         },
         {
-          id: 'sec6-4-composition',
-          title: 'Composition de fonctions',
-          content: `La **composition** combine plusieurs fonctions en une seule.
+          id: 'sec6-4-pratiques-professionnelles',
+          title: 'Bonnes pratiques et style',
+          content: `Quelques règles pour écrire du **bon code Lisp**.
 
-**Définition mathématique :**
-(f ∘ g)(x) = f(g(x))
+**1. Nommage :**
+- Variables : \`ma-variable\`
+- Prédicats (renvoient T/NIL) : \`evenp\`, \`null\`, suffixe \`-p\`
+- Fonctions destructives : préfixe \`n\` comme \`nreverse\`, \`nconc\`
 
-**En OCaml :**
-\`\`\`ocaml
-let compose f g = fun x -> f (g x)
-(* ou : let compose f g x = f (g x) *)
-
-let ( >> ) f g x = g (f x)  (* composition gauche-droite *)
-let ( << ) f g x = f (g x)  (* composition droite-gauche *)
+**2. Indentation :**
+\`\`\`lisp
+(defun factorial (n)
+  (if (<= n 1)
+      1
+      (* n (factorial (- n 1)))))
 \`\`\`
 
-**Exemple :**
-\`\`\`ocaml
-let double x = x * 2
-let increment x = x + 1
+**3. Commentaires :**
+\`\`\`lisp
+;;; Section
+;; Fonction/paragraphe
+; Ligne de code
 
-let double_puis_increment = compose increment double
-(* ou : let double_puis_increment = double >> increment *)
-
-double_puis_increment 5  (* (5 * 2) + 1 = 11 *)
+(defun add (a b)
+  "Additionne deux nombres"  ; Docstring
+  (+ a b))  ; Addition
 \`\`\`
 
-**Pipeline avec |> :**
-\`\`\`ocaml
-[1; 2; 3]
-|> List.map (fun x -> x * 2)
-|> List.filter (fun x -> x > 3)
-|> List.fold_left (+) 0
-(* [2; 4; 6] -> [4; 6] -> 10 *)
+**4. Préférer les fonctions pures :**
+- Sans effets de bord
+- Résultat dépend uniquement des paramètres
+- Plus facile à tester et déboguer
+
+**5. Utiliser LET pour variables locales :**
+\`\`\`lisp
+(let ((x 10)
+      (y 20))
+  (+ x y))
+\`\`\`
+
+**6. Éviter le code global :**
+- Encapsuler dans des fonctions
+- Limiter les variables globales
+
+**7. Tests :**
+\`\`\`lisp
+(defun test-factorial ()
+  (assert (= (factorial 0) 1))
+  (assert (= (factorial 5) 120))
+  "All tests passed")
 \`\`\``,
           keyPoints: [
-            'Combine plusieurs fonctions',
-            '|> pour pipeline (lecture naturelle)',
-            'compose f g = fun x -> f (g x)',
-            'Réutilisabilité du code'
+            'Nommage cohérent',
+            'Indentation correcte',
+            'Commentaires et docstrings',
+            'Fonctions pures préférées',
+            'LET pour variables locales'
           ],
+          tip: 'Utilisez les outils de formatting automatique (emacs, SLIME).',
           exercises: [
             {
               id: 'ex6-4-1',
               type: 'qcm',
-              question: 'Que fait x |> f |> g ?',
+              question: 'Quelle convention indique qu\'une fonction modifie destructivement ?',
               options: [
-                'Applique f puis g à x',
-                'Applique g puis f à x',
-                'Multiplie x par f et g',
-                'Compare x, f et g'
-              ],
-              correctAnswer: 0,
-              explanation: '|> est le pipeline : x |> f |> g = g(f(x)), on applique f puis g.',
-              difficulty: 'medium'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ch7-arbres',
-      title: 'Arbres',
-      description: 'Structures arborescentes et arbres binaires de recherche',
-      icon: '🌳',
-      color: 'bg-emerald-600/20',
-      sections: [
-        {
-          id: 'sec7-1-arbres-binaires',
-          title: 'Arbres binaires',
-          content: `Un **arbre binaire** est une structure récursive où chaque nœud a au plus 2 fils.
-
-**Définition du type :**
-\`\`\`ocaml
-type 'a arbre =
-  | Vide
-  | Noeud of 'a * 'a arbre * 'a arbre
-\`\`\`
-
-**Terminologie :**
-- **Racine** : nœud au sommet
-- **Feuille** : nœud sans enfants
-- **Fils gauche / Fils droit**
-- **Hauteur** : longueur max racine → feuille
-
-**Exemple de création :**
-\`\`\`ocaml
-let arbre_exemple =
-  Noeud(5,
-    Noeud(3, Vide, Vide),
-    Noeud(8, Vide, Vide)
-  )
-(*
-      5
-     / \\
-    3   8
-*)
-\`\`\``,
-          keyPoints: [
-            'Structure récursive',
-            'Vide ou Noeud(valeur, gauche, droit)',
-            'Chaque nœud ≤ 2 fils',
-            'Idéal pour recherche hiérarchique'
-          ],
-          exercises: [
-            {
-              id: 'ex7-1-1',
-              type: 'qcm',
-              question: 'Qu\'est-ce qu\'une feuille dans un arbre binaire ?',
-              options: [
-                'La racine',
-                'Un nœud sans enfants',
-                'Le premier nœud',
-                'Un nœud avec 2 enfants'
+                'Suffixe -p',
+                'Préfixe n',
+                'Majuscules',
+                'Aucune convention'
               ],
               correctAnswer: 1,
-              explanation: 'Une feuille est un nœud qui n\'a aucun enfant (fils gauche et droit = Vide).',
-              difficulty: 'easy'
+              explanation: 'Le préfixe "n" indique une fonction destructive (ex: nreverse, nconc).',
+              difficulty: 'medium'
             },
             {
-              id: 'ex7-1-2',
+              id: 'ex6-4-2',
               type: 'true-false',
-              question: 'Un arbre binaire peut avoir des nœuds avec 3 enfants.',
-              options: ['Vrai', 'Faux'],
-              correctAnswer: 1,
-              explanation: 'FAUX ! Un arbre BINAIRE a au maximum 2 enfants par nœud.',
-              difficulty: 'easy'
-            }
-          ]
-        },
-        {
-          id: 'sec7-2-fonctions-arbres',
-          title: 'Fonctions sur les arbres',
-          content: `**Taille (nombre de nœuds) :**
-\`\`\`ocaml
-let rec taille arbre =
-  match arbre with
-  | Vide -> 0
-  | Noeud(_, g, d) -> 1 + taille g + taille d
-\`\`\`
-
-**Hauteur :**
-\`\`\`ocaml
-let rec hauteur arbre =
-  match arbre with
-  | Vide -> 0
-  | Noeud(_, g, d) -> 1 + max (hauteur g) (hauteur d)
-\`\`\`
-
-**Appartenance :**
-\`\`\`ocaml
-let rec appartient x arbre =
-  match arbre with
-  | Vide -> false
-  | Noeud(v, g, d) ->
-      v = x || appartient x g || appartient x d
-\`\`\`
-
-**Somme des valeurs :**
-\`\`\`ocaml
-let rec somme arbre =
-  match arbre with
-  | Vide -> 0
-  | Noeud(v, g, d) -> v + somme g + somme d
-\`\`\``,
-          keyPoints: [
-            'Récursion sur gauche et droite',
-            'Cas de base : Vide',
-            'Pattern matching naturel',
-            'Traitement de la valeur + récursion'
-          ],
-          exercises: [
-            {
-              id: 'ex7-2-1',
-              type: 'fill-blank',
-              question: 'Complète pour compter les nœuds :',
-              blanks: [
-                { text: 'let rec taille = function | Vide -> 0 | Noeud(_, g, d) -> _____ + taille g + taille d', answer: '1' }
-              ],
-              correctAnswer: ['1'],
-              explanation: 'Chaque nœud compte pour 1, plus la taille de ses sous-arbres.',
-              difficulty: 'medium'
-            }
-          ]
-        },
-        {
-          id: 'sec7-3-abr',
-          title: 'Arbres Binaires de Recherche (ABR)',
-          content: `Un **ABR** est un arbre binaire où pour chaque nœud :
-- Valeurs à gauche < valeur du nœud
-- Valeurs à droite > valeur du nœud
-
-**Avantage : recherche en O(log n)** (si équilibré)
-
-**Recherche dans un ABR :**
-\`\`\`ocaml
-let rec recherche x arbre =
-  match arbre with
-  | Vide -> false
-  | Noeud(v, g, d) ->
-      if x = v then true
-      else if x < v then recherche x g
-      else recherche x d
-\`\`\`
-
-**Insertion dans un ABR :**
-\`\`\`ocaml
-let rec inserer x arbre =
-  match arbre with
-  | Vide -> Noeud(x, Vide, Vide)
-  | Noeud(v, g, d) ->
-      if x < v then Noeud(v, inserer x g, d)
-      else if x > v then Noeud(v, g, inserer x d)
-      else arbre  (* déjà présent *)
-\`\`\``,
-          keyPoints: [
-            'Gauche < Noeud < Droite',
-            'Recherche efficace O(log n)',
-            'Insertion préserve la propriété',
-            'Parcours infixe donne ordre croissant'
-          ],
-          exercises: [
-            {
-              id: 'ex7-3-1',
-              type: 'qcm',
-              question: 'Dans un ABR, où va une valeur plus petite que la racine ?',
-              options: [
-                'À droite',
-                'À gauche',
-                'N\'importe où',
-                'À la racine'
-              ],
-              correctAnswer: 1,
-              explanation: 'Dans un ABR, les valeurs plus petites vont à GAUCHE.',
-              difficulty: 'easy'
-            },
-            {
-              id: 'ex7-3-2',
-              type: 'ordering',
-              question: 'Ordonne l\'insertion de [5, 3, 7] dans un ABR vide :',
-              items: [
-                'Arbre vide',
-                'Insérer 5 (racine)',
-                'Insérer 3 (à gauche de 5)',
-                'Insérer 7 (à droite de 5)',
-                'ABR final : 5 avec 3 à gauche, 7 à droite'
-              ],
-              correctAnswer: [0, 1, 2, 3, 4],
-              explanation: 'On insère 5 comme racine, puis 3 < 5 va à gauche, 7 > 5 va à droite.',
-              difficulty: 'medium'
-            }
-          ]
-        },
-        {
-          id: 'sec7-4-parcours',
-          title: 'Parcours d\'arbres',
-          content: `Il existe 3 parcours principaux pour visiter tous les nœuds :
-
-**1. Parcours Préfixe (Racine-Gauche-Droite) :**
-\`\`\`ocaml
-let rec prefixe arbre =
-  match arbre with
-  | Vide -> []
-  | Noeud(v, g, d) ->
-      [v] @ prefixe g @ prefixe d
-\`\`\`
-
-**2. Parcours Infixe (Gauche-Racine-Droite) :**
-\`\`\`ocaml
-let rec infixe arbre =
-  match arbre with
-  | Vide -> []
-  | Noeud(v, g, d) ->
-      infixe g @ [v] @ infixe d
-\`\`\`
-*Pour un ABR, donne les éléments triés !*
-
-**3. Parcours Suffixe (Gauche-Droite-Racine) :**
-\`\`\`ocaml
-let rec suffixe arbre =
-  match arbre with
-  | Vide -> []
-  | Noeud(v, g, d) ->
-      suffixe g @ suffixe d @ [v]
-\`\`\``,
-          keyPoints: [
-            'Préfixe : Racine-Gauche-Droite',
-            'Infixe : Gauche-Racine-Droite (ABR → trié)',
-            'Suffixe : Gauche-Droite-Racine',
-            'Tous visitent chaque nœud une fois'
-          ],
-          exercises: [
-            {
-              id: 'ex7-4-1',
-              type: 'matching',
-              question: 'Associe le parcours à son ordre :',
-              pairs: [
-                { left: 'Préfixe', right: 'Racine-Gauche-Droite' },
-                { left: 'Infixe', right: 'Gauche-Racine-Droite' },
-                { left: 'Suffixe', right: 'Gauche-Droite-Racine' }
-              ],
-              correctAnswer: ['0-0', '1-1', '2-2'],
-              explanation: 'Chaque parcours visite les nœuds dans un ordre différent.',
-              difficulty: 'medium'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ch8-types-polymorphes',
-      title: 'Types Polymorphes',
-      description: 'Généricité et paramétrage des types',
-      icon: '🔮',
-      color: 'bg-violet-600/20',
-      sections: [
-        {
-          id: 'sec8-1-polymorphisme',
-          title: 'Polymorphisme paramétrique',
-          content: `Le **polymorphisme** permet d'écrire du code générique qui fonctionne pour plusieurs types.
-
-**Variables de type :**
-- 'a, 'b, 'c (prononcé "alpha", "beta", "gamma")
-- Représentent n'importe quel type
-
-**Exemple : fonction identité**
-\`\`\`ocaml
-let identite x = x
-(* Type : 'a -> 'a *)
-\`\`\`
-
-**Exemple : paire**
-\`\`\`ocaml
-let creer_paire x y = (x, y)
-(* Type : 'a -> 'b -> 'a * 'b *)
-\`\`\`
-
-**Option (type polymorphe standard) :**
-\`\`\`ocaml
-type 'a option =
-  | None
-  | Some of 'a
-
-(* int option, string option, ... *)
-\`\`\`
-
-**Liste polymorphe :**
-\`\`\`ocaml
-let rec longueur liste =
-  match liste with
-  | [] -> 0
-  | _ :: reste -> 1 + longueur reste
-(* Type : 'a list -> int *)
-\`\`\``,
-          keyPoints: [
-            '\'a représente un type quelconque',
-            'Même code pour différents types',
-            'Inférence automatique',
-            'Types option, list sont polymorphes'
-          ],
-          exercises: [
-            {
-              id: 'ex8-1-1',
-              type: 'qcm',
-              question: 'Que signifie le type \'a -> \'a ?',
-              options: [
-                'Fonction qui prend un int et retourne un int',
-                'Fonction qui prend et retourne le même type',
-                'Fonction qui prend deux paramètres',
-                'Fonction polymorphe quelconque'
-              ],
-              correctAnswer: 1,
-              explanation: '\'a -> \'a signifie : prend une valeur de type \'a et retourne une valeur du MÊME type \'a.',
-              difficulty: 'medium'
-            },
-            {
-              id: 'ex8-1-2',
-              type: 'true-false',
-              question: 'Une fonction de type \'a -> int fonctionne pour n\'importe quel type en entrée.',
+              question: 'Les fonctions pures sont plus faciles à tester.',
               options: ['Vrai', 'Faux'],
               correctAnswer: 0,
-              explanation: 'VRAI ! \'a peut être n\'importe quoi, donc la fonction accepte tout type en entrée et retourne un int.',
-              difficulty: 'easy'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ch9-exceptions',
-      title: 'Exceptions',
-      description: 'Gestion des erreurs exceptionnelles',
-      icon: '⚠️',
-      color: 'bg-red-600/20',
-      sections: [
-        {
-          id: 'sec9-1-exceptions-base',
-          title: 'Lever et capturer des exceptions',
-          content: `Les **exceptions** permettent de gérer les erreurs exceptionnelles.
-
-**Lever une exception :**
-\`\`\`ocaml
-raise (Failure "message d'erreur")
-failwith "message"  (* raccourci *)
-\`\`\`
-
-**Exceptions standard :**
-- Division_by_zero
-- Not_found
-- Invalid_argument "msg"
-- Failure "msg"
-
-**Capturer avec try...with :**
-\`\`\`ocaml
-try
-  1 / 0
-with
-  | Division_by_zero -> print_endline "Division par zéro !"
-
-try
-  List.hd []
-with
-  | Failure msg -> print_endline msg
-  | _ -> print_endline "Autre erreur"
-\`\`\`
-
-**Définir ses propres exceptions :**
-\`\`\`ocaml
-exception Ma_erreur of string
-
-raise (Ma_erreur "problème !")
-\`\`\``,
-          keyPoints: [
-            'raise pour lever une exception',
-            'try...with pour capturer',
-            'failwith = raccourci',
-            'Peut définir ses propres exceptions'
-          ],
-          exercises: [
-            {
-              id: 'ex9-1-1',
-              type: 'qcm',
-              question: 'Que fait failwith "erreur" ?',
-              options: [
-                'Affiche un message',
-                'Lève une exception Failure',
-                'Arrête le programme',
-                'Retourne false'
-              ],
-              correctAnswer: 1,
-              explanation: 'failwith lève une exception de type Failure avec le message donné.',
-              difficulty: 'easy'
-            },
-            {
-              id: 'ex9-1-2',
-              type: 'fill-blank',
-              question: 'Complète pour capturer :',
-              blanks: [
-                { text: '_____ expr with | exn -> valeur_par_defaut', answer: 'try' }
-              ],
-              correctAnswer: ['try'],
-              explanation: 'On utilise try...with pour capturer les exceptions.',
-              difficulty: 'easy'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ch10-references',
-      title: 'Références et Effets de Bord',
-      description: 'Mutabilité contrôlée en OCaml',
-      icon: '📌',
-      color: 'bg-amber-600/20',
-      sections: [
-        {
-          id: 'sec10-1-references',
-          title: 'Références mutables',
-          content: `Les **références** permettent de créer des valeurs modifiables.
-
-**Création :**
-\`\`\`ocaml
-let compteur = ref 0
-(* Type : int ref *)
-\`\`\`
-
-**Lecture avec ! :**
-\`\`\`ocaml
-!compteur  (* 0 *)
-\`\`\`
-
-**Modification avec := :**
-\`\`\`ocaml
-compteur := !compteur + 1
-compteur := 5
-\`\`\`
-
-**Exemple : compteur**
-\`\`\`ocaml
-let compteur = ref 0
-
-let incrementer () =
-  compteur := !compteur + 1
-
-let valeur () = !compteur
-\`\`\`
-
-**⚠️ À utiliser avec parcimonie !**
-- Brise l'immuabilité
-- Rend le code moins prévisible
-- Utiliser seulement quand nécessaire`,
-          keyPoints: [
-            'ref crée une référence',
-            '! pour lire',
-            ':= pour modifier',
-            'À éviter sauf si vraiment nécessaire'
-          ],
-          tip: 'Les références sont utiles pour les compteurs, caches, ou quand l\'algorithme l\'exige vraiment.',
-          exercises: [
-            {
-              id: 'ex10-1-1',
-              type: 'matching',
-              question: 'Associe chaque opération :',
-              pairs: [
-                { left: 'ref 5', right: 'Créer une référence' },
-                { left: '!r', right: 'Lire la valeur' },
-                { left: 'r := 10', right: 'Modifier la valeur' }
-              ],
-              correctAnswer: ['0-0', '1-1', '2-2'],
-              explanation: 'ref crée, ! lit, := modifie.',
-              difficulty: 'easy'
-            },
-            {
-              id: 'ex10-1-2',
-              type: 'true-false',
-              question: 'Les références violent le principe d\'immuabilité d\'OCaml.',
-              options: ['Vrai', 'Faux'],
-              correctAnswer: 0,
-              explanation: 'VRAI ! C\'est pourquoi il faut les utiliser avec parcimonie.',
-              difficulty: 'medium'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'ch11-modules',
-      title: 'Modules et Signatures',
-      description: 'Organisation et encapsulation du code',
-      icon: '📦',
-      color: 'bg-teal-600/20',
-      sections: [
-        {
-          id: 'sec11-1-modules',
-          title: 'Modules',
-          content: `Les **modules** permettent d'organiser le code en unités logiques.
-
-**Définition d'un module :**
-\`\`\`ocaml
-module MaListe = struct
-  let vide = []
-
-  let ajouter x liste = x :: liste
-
-  let longueur = List.length
-end
-\`\`\`
-
-**Utilisation :**
-\`\`\`ocaml
-MaListe.vide
-MaListe.ajouter 5 []
-MaListe.longueur [1; 2; 3]
-\`\`\`
-
-**Open (import) :**
-\`\`\`ocaml
-open MaListe
-vide  (* pas besoin de MaListe. *)
-\`\`\`
-
-**Modules standards :**
-- List (fonctions sur listes)
-- String (manipulation de chaînes)
-- Array (tableaux)
-- Map, Set (structures de données)`,
-          keyPoints: [
-            'module Nom = struct...end',
-            'Namespace : Module.fonction',
-            'open pour importer',
-            'Organisation du code'
-          ],
-          exercises: [
-            {
-              id: 'ex11-1-1',
-              type: 'qcm',
-              question: 'Comment appelle-t-on une fonction d\'un module ?',
-              options: [
-                'module.fonction',
-                'Module.fonction',
-                'module->fonction',
-                'fonction@module'
-              ],
-              correctAnswer: 1,
-              explanation: 'On utilise Module.fonction (avec majuscule au module).',
-              difficulty: 'easy'
-            }
-          ]
-        },
-        {
-          id: 'sec11-2-signatures',
-          title: 'Signatures (interfaces)',
-          content: `Les **signatures** définissent l'interface publique d'un module.
-
-**Définition d'une signature :**
-\`\`\`ocaml
-module type PILE = sig
-  type 'a t
-  val vide : 'a t
-  val push : 'a -> 'a t -> 'a t
-  val pop : 'a t -> 'a * 'a t
-end
-\`\`\`
-
-**Implémentation :**
-\`\`\`ocaml
-module PileListe : PILE = struct
-  type 'a t = 'a list
-
-  let vide = []
-
-  let push x pile = x :: pile
-
-  let pop = function
-    | [] -> failwith "pile vide"
-    | x :: reste -> (x, reste)
-end
-\`\`\`
-
-**Avantages :**
-- **Encapsulation** : cache l'implémentation
-- **Abstraction** : type abstrait
-- **Contrat** : interface claire`,
-          keyPoints: [
-            'sig...end définit l\'interface',
-            'type abstrait caché',
-            'module : SIGNATURE = struct...',
-            'Séparation interface/implémentation'
-          ],
-          exercises: [
-            {
-              id: 'ex11-2-1',
-              type: 'true-false',
-              question: 'Une signature permet de cacher l\'implémentation interne.',
-              options: ['Vrai', 'Faux'],
-              correctAnswer: 0,
-              explanation: 'VRAI ! C\'est le principe d\'encapsulation.',
+              explanation: 'VRAI ! Sans effets de bord, le résultat dépend uniquement des entrées.',
               difficulty: 'easy'
             }
           ]
